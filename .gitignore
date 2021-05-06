@@ -1,6 +1,14 @@
 # Prerequisites
 *.d
 
+#folders
+.vscode
+build
+build/*
+libs/armadillo
+libs/lib_win64
+test
+
 # Compiled Object files
 *.slo
 *.lo
