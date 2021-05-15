@@ -1,84 +1,133 @@
 #include "ImageLoader.hpp"
 
-#include <experimental/filesystem>
-
 namespace AppLogic
 {
-    using std::string;
-    using std::vector;
     using namespace cimg_library;
     namespace fs = std::experimental::filesystem;
-
-    struct AcceptedFileFormats
-    {
-        /* data */
-    };
-
-    static bool endsWith(const string &str, const string &suffix);
-    static bool isSupportedImageFormat(const string &str);
 
     VecImage ImageLoader::loadSingleImage(const char *filename)
     {
         // check if file exists
+       
+            string full_path = fs::canonical(filename);
 
-        // VecImage result(filename);
-        return VecImage(filename);
+            // VecImage returns empty picture if not able to load
+            VecImage result(full_path);
+
+            
+        this->source_directory = fs::path(full_path).parent_path();
+        this->loaded_file_paths.push_back(full_path);
+                            this->loaded_file_names.push_back(fs::path(full_path).filename());
+        
+        return result;
+      
+        
     }
 
     vector<VecImage> ImageLoader::loadImagesFromFolder(const char *folder_path)
     {
 
+        this->clearLoadedData();
         vector<VecImage> result;
-        this->loaded_images.clear();
-        // VecImage ld_image;
-        // std::string path = "/path/to/directory";
-        // this->loaded_images.push_back(fs::canonical(folder_path));
-        size_t first_image_size = 0;
+
+        size_t first_image_col = 0;
+        size_t first_image_row = 0;
         bool first_image = true;
-        for (const auto &entry : fs::directory_iterator(folder_path))
+
+        try
         {
-
-            // std::cout << entry.path() << std::endl;
-            // string filename =
-            if (isSupportedImageFormat(entry.path()))
+            fs::directory_iterator it = fs::directory_iterator(fs::canonical(folder_path));
+            for (const auto &entry : it)
             {
-                VecImage ld_image = VecImage(fs::canonical(entry));
-                if (ld_image.num_cols() != 0)
+                if (isSupportedImageFormat(entry.path()))
                 {
-                    if (first_image)
+                    string full_path = fs::canonical(entry);
+                    VecImage ld_image(full_path);
+                    if (ld_image.num_cols() != 0)
                     {
-                        first_image_size = ld_image.num_cols() * ld_image.num_rows();
-                        first_image = false;
-                    }
+                        if (first_image)
+                        {
+                            first_image_col = ld_image.num_cols();
+                            first_image_row = ld_image.num_rows();
+                            first_image = false;
+                            this->source_directory = entry.path().parent_path();
+                        }
 
-                    if (first_image_size == ld_image.num_cols() * ld_image.num_rows())
-                    {
-                        this->loaded_images.push_back(fs::canonical(entry));
-                        result.push_back(ld_image);
-                    }
-                    else
-                    {
-                        this->unloaded_images.push_back(fs::canonical(entry));
+                        if (first_image_col == ld_image.num_cols() && first_image_row == ld_image.num_rows())
+                        {
+                            this->loaded_file_paths.push_back(full_path);
+                            this->loaded_file_names.push_back(entry.path().filename());
+                            result.push_back(ld_image);
+                        }
+                        else
+                        {
+                            this->not_loaded_files.push_back(full_path);
+                        }
                     }
                 }
             }
+            return result;
         }
-        return result;
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+            result.clear();
+            return result;
+        }
     }
 
-    static bool isSupportedImageFormat(const string &str)
+    vector<FilterInfo> ImageLoader::loadFilterInfo(const char *folder_path)
     {
-        return endsWith(str, ".jpg") || endsWith(str, ".bmp") || endsWith(str, ".png");
-    }
+        this->clearLoadedData();
+        vector<FilterInfo> result;
 
-    static bool endsWith(const std::string &str, const std::string &suffix)
-    {
-        return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
+        try
+        {
+            for (const auto &entry : fs::directory_iterator(fs::canonical(folder_path)))
+            {
+
+                if (entry.path().extension() == FILTER_INFO_EXTENSION)
+                {
+                    fstream fi_binary_file(entry.path(), std::ios::in | std::ios::binary | std::ios::app);
+                    FilterInfo fi;
+                    if (fi_binary_file.is_open())
+                    {
+                        fi_binary_file >> fi;
+                        fi_binary_file.close();
+
+                        result.push_back(fi);
+                        this->loaded_file_names.push_back(entry.path().filename());
+                        this->loaded_file_paths.push_back(fs::canonical(entry));
+                    }
+                }
+            }
+
+            return result;
+        }
+        catch (const std::exception &e)
+        {
+            std::cerr << e.what() << '\n';
+            result.clear();
+            return result;
+        }
     }
 
     vector<string> ImageLoader::getLoadedImageNames()
     {
-        return this->loaded_images;
+        return this->loaded_file_names;
+    }
+
+    vector<string> ImageLoader::getLoadedImagePaths()
+    {
+        return this->loaded_file_paths;
+    }
+    vector<string> ImageLoader::getNotLoadedImagePaths()
+    {
+        return this->not_loaded_files;
+    }
+    string ImageLoader::getSourceDirectory()
+    {
+        return this->source_directory;
     }
 }
 

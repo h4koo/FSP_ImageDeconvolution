@@ -2,6 +2,32 @@
 #define IMAGECLEANINGLOGIC_H
 
 
+#include "ImageDeconvolution.hpp"
+
+namespace AppLogic
+{
+
+    using std::string;
+    using std::vector;
+
+    class ImageCleaningLogic
+    {
+    private:
+        ImageDeconvolution deconv;
+        vector<FilterInfo> filters;
+
+    public:
+        vector<string> getFilterNames();
+        vector<string> loadSingleImage(string file_path);
+        vector<string> loadImagesFromFolder(string folder_path);
+        bool loadFilter(int filter_id);
+
+        VecImage applyFilterToImage(int image_id);
+        FilterInfo * getFilterInfo(size_t indx);
+    };
+
+}
+
 #endif
 
 // +loadImagesFromFolder(folder_path : string) : string[]

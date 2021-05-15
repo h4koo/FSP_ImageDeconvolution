@@ -12,10 +12,10 @@ MAKEFILE      = Makefile
 
 CC            = gcc
 CXX           = g++
-DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
-CFLAGS        = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-CXXFLAGS      = -pipe -O2 -Wall -W -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I. -I../../libs/CImg/CImg -I../../include/AppLogic -I../../libs/libfrcima/include -I../AppLogic -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I../../build/qt_moc -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
+DEFINES       = -DQT_DEPRECATED_WARNINGS -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_CORE_LIB
+CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT -fPIC $(DEFINES)
+INCPATH       = -I. -I../../libs/CImg/CImg -I../../include/AppLogic -I../../libs/libfrcima/include -I../AppLogic -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I../../build/qt_moc -isystem /usr/include/libdrm -I../../build/qt_ui -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++
 QMAKE         = /usr/lib/qt5/bin/qmake
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -37,7 +37,7 @@ COMPRESS      = gzip -9f
 DISTNAME      = ImageDeconvolutionUI1.0.0
 DISTDIR = /mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/build/obj/ImageDeconvolutionUI1.0.0
 LINK          = g++
-LFLAGS        = -Wl,-O1
+LFLAGS        = 
 LIBS          = $(SUBLIBS) -L/usr/X11R6/lib -lm -lX11 -ljpeg -larmadillo -lstdc++fs -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
@@ -55,16 +55,22 @@ SOURCES       = imagedeconvolutionwindow.cpp \
 		filterwindow.cpp \
 		../AppLogic/Filter.cpp \
 		../AppLogic/ImageLoader.cpp \
-		../../libs/libfrcima/src/libfrcima.cpp \
-		../AppLogic/VecImage.cpp ../../build/qt_moc/moc_filterwindow.cpp \
+		../AppLogic/FilterLogic.cpp \
+		../AppLogic/ImageDeconvolution.cpp \
+		../AppLogic/ImageCleaningLogic.cpp \
+		../AppLogic/VecImage.cpp \
+		../../libs/libfrcima/src/libfrcima.cpp ../../build/qt_moc/moc_filterwindow.cpp \
 		../../build/qt_moc/moc_imagedeconvolutionwindow.cpp
 OBJECTS       = ../../build/obj/imagedeconvolutionwindow.o \
 		../../build/obj/main.o \
 		../../build/obj/filterwindow.o \
 		../../build/obj/Filter.o \
 		../../build/obj/ImageLoader.o \
-		../../build/obj/libfrcima.o \
+		../../build/obj/FilterLogic.o \
+		../../build/obj/ImageDeconvolution.o \
+		../../build/obj/ImageCleaningLogic.o \
 		../../build/obj/VecImage.o \
+		../../build/obj/libfrcima.o \
 		../../build/obj/moc_filterwindow.o \
 		../../build/obj/moc_imagedeconvolutionwindow.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
@@ -142,18 +148,25 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		ImageDeconvolutionUI.pro filterwindow.h \
 		imagedeconvolutionwindow.h \
+		uihelpers.h \
 		../AppLogic/Filter.hpp \
 		../AppLogic/ImageLoader.hpp \
+		../AppLogic/ImageDeconvolution.hpp \
 		../../libs/libfrcima/include/libfrcima.hpp \
 		../../include/AppLogic/VecImage.hpp \
 		../../include/AppLogic/FilterInfo.hpp \
+		../../include/AppLogic/ImageCleaningLogic.hpp \
+		../../include/AppLogic/FilterLogic.hpp \
 		../../libs/CImg/CImg/CImg.h imagedeconvolutionwindow.cpp \
 		main.cpp \
 		filterwindow.cpp \
 		../AppLogic/Filter.cpp \
 		../AppLogic/ImageLoader.cpp \
-		../../libs/libfrcima/src/libfrcima.cpp \
-		../AppLogic/VecImage.cpp
+		../AppLogic/FilterLogic.cpp \
+		../AppLogic/ImageDeconvolution.cpp \
+		../AppLogic/ImageCleaningLogic.cpp \
+		../AppLogic/VecImage.cpp \
+		../../libs/libfrcima/src/libfrcima.cpp
 QMAKE_TARGET  = ImageDeconvolutionUI
 DESTDIR       = ../../test/bin/UI/
 TARGET        = ../../test/bin/UI/ImageDeconvolutionUI
@@ -162,7 +175,7 @@ TARGET        = ../../test/bin/UI/ImageDeconvolutionUI
 first: all
 ####### Build rules
 
-$(TARGET): ui_filterwindow.h ui_imagedeconvolutionwindow.h $(OBJECTS)  
+$(TARGET): ../../build/qt_ui/ui_filterwindow.h ../../build/qt_ui/ui_imagedeconvolutionwindow.h $(OBJECTS)  
 	@test -d ../../test/bin/UI/ || mkdir -p ../../test/bin/UI/
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
 
@@ -336,8 +349,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents filterwindow.h imagedeconvolutionwindow.h ../AppLogic/Filter.hpp ../AppLogic/ImageLoader.hpp ../../libs/libfrcima/include/libfrcima.hpp ../../include/AppLogic/VecImage.hpp ../../include/AppLogic/FilterInfo.hpp ../../libs/CImg/CImg/CImg.h $(DISTDIR)/
-	$(COPY_FILE) --parents imagedeconvolutionwindow.cpp main.cpp filterwindow.cpp ../AppLogic/Filter.cpp ../AppLogic/ImageLoader.cpp ../../libs/libfrcima/src/libfrcima.cpp ../AppLogic/VecImage.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents filterwindow.h imagedeconvolutionwindow.h uihelpers.h ../AppLogic/Filter.hpp ../AppLogic/ImageLoader.hpp ../AppLogic/ImageDeconvolution.hpp ../../libs/libfrcima/include/libfrcima.hpp ../../include/AppLogic/VecImage.hpp ../../include/AppLogic/FilterInfo.hpp ../../include/AppLogic/ImageCleaningLogic.hpp ../../include/AppLogic/FilterLogic.hpp ../../libs/CImg/CImg/CImg.h $(DISTDIR)/
+	$(COPY_FILE) --parents imagedeconvolutionwindow.cpp main.cpp filterwindow.cpp ../AppLogic/Filter.cpp ../AppLogic/ImageLoader.cpp ../AppLogic/FilterLogic.cpp ../AppLogic/ImageDeconvolution.cpp ../AppLogic/ImageCleaningLogic.cpp ../AppLogic/VecImage.cpp ../../libs/libfrcima/src/libfrcima.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents filterwindow.ui imagedeconvolutionwindow.ui $(DISTDIR)/
 
 
@@ -368,12 +381,14 @@ compiler_moc_predefs_make_all: ../../build/qt_moc/moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) ../../build/qt_moc/moc_predefs.h
 ../../build/qt_moc/moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
-	g++ -pipe -O2 -Wall -W -dM -E -o ../../build/qt_moc/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
+	g++ -pipe -g -Wall -W -dM -E -o ../../build/qt_moc/moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
 compiler_moc_header_make_all: ../../build/qt_moc/moc_filterwindow.cpp ../../build/qt_moc/moc_imagedeconvolutionwindow.cpp
 compiler_moc_header_clean:
 	-$(DEL_FILE) ../../build/qt_moc/moc_filterwindow.cpp ../../build/qt_moc/moc_imagedeconvolutionwindow.cpp
-../../build/qt_moc/moc_filterwindow.cpp: ../AppLogic/Filter.hpp \
+../../build/qt_moc/moc_filterwindow.cpp: uihelpers.h \
+		../../include/AppLogic/FilterLogic.hpp \
+		../AppLogic/Filter.hpp \
 		../../include/AppLogic/FilterInfo.hpp \
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
@@ -384,23 +399,30 @@ compiler_moc_header_clean:
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ../../build/qt_moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/src/UI -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/libs/CImg/CImg -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/include/AppLogic -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/libs/libfrcima/include -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/src/AppLogic -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include filterwindow.h -o ../../build/qt_moc/moc_filterwindow.cpp
 
-../../build/qt_moc/moc_imagedeconvolutionwindow.cpp: imagedeconvolutionwindow.h \
+../../build/qt_moc/moc_imagedeconvolutionwindow.cpp: uihelpers.h \
+		../../include/AppLogic/ImageCleaningLogic.hpp \
+		../AppLogic/ImageDeconvolution.hpp \
+		../../include/AppLogic/FilterInfo.hpp \
+		../../include/AppLogic/VecImage.hpp \
+		../../libs/CImg/CImg/CImg.h \
+		../AppLogic/ImageLoader.hpp \
+		imagedeconvolutionwindow.h \
 		../../build/qt_moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
 	/usr/lib/qt5/bin/moc $(DEFINES) --include ../../build/qt_moc/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/src/UI -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/libs/CImg/CImg -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/include/AppLogic -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/libs/libfrcima/include -I/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/src/AppLogic -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/7 -I/usr/include/x86_64-linux-gnu/c++/7 -I/usr/include/c++/7/backward -I/usr/lib/gcc/x86_64-linux-gnu/7/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include imagedeconvolutionwindow.h -o ../../build/qt_moc/moc_imagedeconvolutionwindow.cpp
 
 compiler_moc_source_make_all:
 compiler_moc_source_clean:
-compiler_uic_make_all: ui_filterwindow.h ui_imagedeconvolutionwindow.h
+compiler_uic_make_all: ../../build/qt_ui/ui_filterwindow.h ../../build/qt_ui/ui_imagedeconvolutionwindow.h
 compiler_uic_clean:
-	-$(DEL_FILE) ui_filterwindow.h ui_imagedeconvolutionwindow.h
-ui_filterwindow.h: filterwindow.ui \
+	-$(DEL_FILE) ../../build/qt_ui/ui_filterwindow.h ../../build/qt_ui/ui_imagedeconvolutionwindow.h
+../../build/qt_ui/ui_filterwindow.h: filterwindow.ui \
 		/usr/lib/qt5/bin/uic
-	/usr/lib/qt5/bin/uic filterwindow.ui -o ui_filterwindow.h
+	/usr/lib/qt5/bin/uic filterwindow.ui -o ../../build/qt_ui/ui_filterwindow.h
 
-ui_imagedeconvolutionwindow.h: imagedeconvolutionwindow.ui \
+../../build/qt_ui/ui_imagedeconvolutionwindow.h: imagedeconvolutionwindow.ui \
 		/usr/lib/qt5/bin/uic
-	/usr/lib/qt5/bin/uic imagedeconvolutionwindow.ui -o ui_imagedeconvolutionwindow.h
+	/usr/lib/qt5/bin/uic imagedeconvolutionwindow.ui -o ../../build/qt_ui/ui_imagedeconvolutionwindow.h
 
 compiler_yacc_decl_make_all:
 compiler_yacc_decl_clean:
@@ -413,27 +435,40 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 ####### Compile
 
 ../../build/obj/imagedeconvolutionwindow.o: imagedeconvolutionwindow.cpp imagedeconvolutionwindow.h \
-		ui_imagedeconvolutionwindow.h
+		uihelpers.h \
+		../../include/AppLogic/ImageCleaningLogic.hpp \
+		../AppLogic/ImageDeconvolution.hpp \
+		../../include/AppLogic/FilterInfo.hpp \
+		../../include/AppLogic/VecImage.hpp \
+		../../libs/CImg/CImg/CImg.h \
+		../AppLogic/ImageLoader.hpp \
+		../../build/qt_ui/ui_imagedeconvolutionwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/imagedeconvolutionwindow.o imagedeconvolutionwindow.cpp
 
 ../../build/obj/main.o: main.cpp filterwindow.h \
+		uihelpers.h \
+		../../include/AppLogic/FilterLogic.hpp \
 		../AppLogic/Filter.hpp \
 		../../include/AppLogic/FilterInfo.hpp \
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
 		../AppLogic/ImageLoader.hpp \
 		../../libs/libfrcima/include/libfrcima.hpp \
-		imagedeconvolutionwindow.h
+		imagedeconvolutionwindow.h \
+		../../include/AppLogic/ImageCleaningLogic.hpp \
+		../AppLogic/ImageDeconvolution.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/main.o main.cpp
 
 ../../build/obj/filterwindow.o: filterwindow.cpp filterwindow.h \
+		uihelpers.h \
+		../../include/AppLogic/FilterLogic.hpp \
 		../AppLogic/Filter.hpp \
 		../../include/AppLogic/FilterInfo.hpp \
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
 		../AppLogic/ImageLoader.hpp \
 		../../libs/libfrcima/include/libfrcima.hpp \
-		ui_filterwindow.h
+		../../build/qt_ui/ui_filterwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/filterwindow.o filterwindow.cpp
 
 ../../build/obj/Filter.o: ../AppLogic/Filter.cpp ../AppLogic/Filter.hpp \
@@ -446,15 +481,40 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 
 ../../build/obj/ImageLoader.o: ../AppLogic/ImageLoader.cpp ../AppLogic/ImageLoader.hpp \
 		../../include/AppLogic/VecImage.hpp \
-		../../libs/CImg/CImg/CImg.h
+		../../libs/CImg/CImg/CImg.h \
+		../../include/AppLogic/FilterInfo.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/ImageLoader.o ../AppLogic/ImageLoader.cpp
 
-../../build/obj/libfrcima.o: ../../libs/libfrcima/src/libfrcima.cpp ../../libs/libfrcima/include/libfrcima.hpp
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/libfrcima.o ../../libs/libfrcima/src/libfrcima.cpp
+../../build/obj/FilterLogic.o: ../AppLogic/FilterLogic.cpp ../../include/AppLogic/FilterLogic.hpp \
+		../AppLogic/Filter.hpp \
+		../../include/AppLogic/FilterInfo.hpp \
+		../../include/AppLogic/VecImage.hpp \
+		../../libs/CImg/CImg/CImg.h \
+		../AppLogic/ImageLoader.hpp \
+		../../libs/libfrcima/include/libfrcima.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/FilterLogic.o ../AppLogic/FilterLogic.cpp
+
+../../build/obj/ImageDeconvolution.o: ../AppLogic/ImageDeconvolution.cpp ../AppLogic/ImageDeconvolution.hpp \
+		../../include/AppLogic/FilterInfo.hpp \
+		../../include/AppLogic/VecImage.hpp \
+		../../libs/CImg/CImg/CImg.h \
+		../AppLogic/ImageLoader.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/ImageDeconvolution.o ../AppLogic/ImageDeconvolution.cpp
+
+../../build/obj/ImageCleaningLogic.o: ../AppLogic/ImageCleaningLogic.cpp ../../include/AppLogic/ImageCleaningLogic.hpp \
+		../AppLogic/ImageDeconvolution.hpp \
+		../../include/AppLogic/FilterInfo.hpp \
+		../../include/AppLogic/VecImage.hpp \
+		../../libs/CImg/CImg/CImg.h \
+		../AppLogic/ImageLoader.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/ImageCleaningLogic.o ../AppLogic/ImageCleaningLogic.cpp
 
 ../../build/obj/VecImage.o: ../AppLogic/VecImage.cpp ../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/VecImage.o ../AppLogic/VecImage.cpp
+
+../../build/obj/libfrcima.o: ../../libs/libfrcima/src/libfrcima.cpp ../../libs/libfrcima/include/libfrcima.hpp
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/libfrcima.o ../../libs/libfrcima/src/libfrcima.cpp
 
 ../../build/obj/moc_filterwindow.o: ../../build/qt_moc/moc_filterwindow.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/moc_filterwindow.o ../../build/qt_moc/moc_filterwindow.cpp
@@ -467,7 +527,6 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 install_target: first FORCE
 	@test -d $(INSTALL_ROOT)/opt/ImageDeconvolutionUI/bin || mkdir -p $(INSTALL_ROOT)/opt/ImageDeconvolutionUI/bin
 	-$(QINSTALL_PROGRAM) ../../test/bin/UI/$(QMAKE_TARGET) $(INSTALL_ROOT)/opt/ImageDeconvolutionUI/bin/$(QMAKE_TARGET)
-	-$(STRIP) $(INSTALL_ROOT)/opt/ImageDeconvolutionUI/bin/$(QMAKE_TARGET)
 
 uninstall_target: FORCE
 	-$(DEL_FILE) $(INSTALL_ROOT)/opt/ImageDeconvolutionUI/bin/$(QMAKE_TARGET)

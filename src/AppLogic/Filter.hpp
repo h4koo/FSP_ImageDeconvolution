@@ -17,6 +17,13 @@ namespace AppLogic
     using std::string;
     using std::vector;
 
+    typedef enum
+    {
+        RCIMA_METHOD,
+        FAST_RCIMA_METHOD
+    } calc_method_t;
+
+
     class Filter
     {
     private:
@@ -30,13 +37,19 @@ namespace AppLogic
     public:
         Filter();
 
-        // VecImage applyNoiseToImage(int image_id, noise_type_t noise_type, double value);
+        VecImage applyNoiseToImage(size_t image_id, double noise_value, noise_type_t noise_type = noise_type_t::GAUSSIAN);
 
-        void applyNoiseToWorkingImages();
+        void applyNoiseToWorkingImages(double noise_value, noise_type_t noise_type = noise_type_t::GAUSSIAN);
+        inline void setFilterName(string name){
+            this->calc_info.filter_name = name;
+        }
 
         mat &getFmatrix()
         {
             return this->F_matrix;
+        };
+        FilterInfo getFilterInfo(){
+            return this->calc_info;
         };
 
         vector<string> loadImagesFromFolder(string folder_path);
@@ -44,15 +57,15 @@ namespace AppLogic
 
         vector<string> loadImagesFromZip(string file_path);
 
-        bool calculateFilter(size_t rank);
+        bool calculateFilter(size_t rank, calc_method_t calc_method);
 
-        bool saveToFile(string file_path);
+        bool saveToFile(string file_path = FILTER_SAVE_LOCATION);
 
         bool loadFmatrixFromFile(string file_path);
 
         bool saveAllDirtyImages(string folder_path);
-        bool saveDirtyImage(int image_id, string folder_path);
-        bool saveFilterInfo();
+        bool saveDirtyImage(size_t image_id, string folder_path);
+        bool saveFilterInfo(string folder_path = FILTER_SAVE_LOCATION);
         bool exportFilter();
         bool importFilter(string file_path);
     };

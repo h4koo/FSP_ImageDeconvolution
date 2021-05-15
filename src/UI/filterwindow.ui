@@ -79,7 +79,7 @@
      <string>Filter name:</string>
     </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit">
+   <widget class="QLineEdit" name="filter_name_input">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -89,7 +89,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QScrollArea" name="filtered_image_area">
+   <widget class="QScrollArea" name="dirty_image_area">
     <property name="geometry">
      <rect>
       <x>470</x>
@@ -116,7 +116,7 @@
        <height>254</height>
       </rect>
      </property>
-     <widget class="QLabel" name="filtered_image_label">
+     <widget class="QLabel" name="dirty_image_label">
       <property name="geometry">
        <rect>
         <x>80</x>
@@ -169,7 +169,7 @@
      <attribute name="title">
       <string>Gaussian</string>
      </attribute>
-     <widget class="QSlider" name="horizontalSlider">
+     <widget class="QSlider" name="gaussian_slider">
       <property name="geometry">
        <rect>
         <x>40</x>
@@ -182,7 +182,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="label_6">
+     <widget class="QLabel" name="gaussian_value">
       <property name="geometry">
        <rect>
         <x>110</x>
@@ -241,7 +241,7 @@
      <string>Apply noise:</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
+   <widget class="QListWidget" name="listWidget_loaded_images">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -285,16 +285,19 @@
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QRadioButton" name="radioButton">
+      <widget class="QRadioButton" name="rcima_rbtn">
        <property name="text">
         <string>RCIMA</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QRadioButton" name="radioButton_2">
+      <widget class="QRadioButton" name="fastrcima_rbtn">
        <property name="text">
         <string>fast-RCIMA</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -326,7 +329,7 @@
      <string>Dirty image</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="calc_filter_btn">
     <property name="geometry">
      <rect>
       <x>640</x>
@@ -379,31 +382,9 @@
        <height>254</height>
       </rect>
      </property>
-     <widget class="QLabel" name="loaded_image_label">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>110</y>
-        <width>111</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>No loaded image</string>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
     </widget>
    </widget>
-   <widget class="QSpinBox" name="spinBox">
+   <widget class="QSpinBox" name="rank_value_spinBox">
     <property name="geometry">
      <rect>
       <x>100</x>
@@ -411,6 +392,9 @@
       <width>42</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="acceptDrops">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QPushButton" name="load_images_btn">
@@ -424,6 +408,22 @@
     </property>
     <property name="text">
      <string>Load images</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_min_max_rank">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>540</y>
+      <width>47</width>
+      <height>14</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
     </property>
    </widget>
   </widget>
@@ -460,25 +460,25 @@
  </widget>
  <tabstops>
   <tabstop>load_images_btn</tabstop>
-  <tabstop>listWidget</tabstop>
+  <tabstop>listWidget_loaded_images</tabstop>
   <tabstop>noise_selection_group</tabstop>
-  <tabstop>lineEdit</tabstop>
-  <tabstop>spinBox</tabstop>
-  <tabstop>radioButton</tabstop>
-  <tabstop>radioButton_2</tabstop>
-  <tabstop>pushButton</tabstop>
+  <tabstop>filter_name_input</tabstop>
+  <tabstop>rank_value_spinBox</tabstop>
+  <tabstop>rcima_rbtn</tabstop>
+  <tabstop>fastrcima_rbtn</tabstop>
+  <tabstop>calc_filter_btn</tabstop>
   <tabstop>next_loaded_image_btn</tabstop>
-  <tabstop>horizontalSlider</tabstop>
-  <tabstop>filtered_image_area</tabstop>
+  <tabstop>gaussian_slider</tabstop>
+  <tabstop>dirty_image_area</tabstop>
   <tabstop>loaded_image_area</tabstop>
   <tabstop>previous_loaded_image_btn</tabstop>
  </tabstops>
  <resources/>
  <connections>
   <connection>
-   <sender>horizontalSlider</sender>
+   <sender>gaussian_slider</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>label_6</receiver>
+   <receiver>gaussian_value</receiver>
    <slot>setNum(int)</slot>
    <hints>
     <hint type="sourcelabel">

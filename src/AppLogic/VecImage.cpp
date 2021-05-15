@@ -5,6 +5,12 @@
 
 namespace AppLogic
 {
+    VecImage::VecImage(){
+            this->cols = 0;
+            this->rows = 0; 
+            this->source_file_location = "empty";
+            this->data.clear();
+    }
 
     VecImage::VecImage(std::string filename)
     {
@@ -17,9 +23,24 @@ namespace AppLogic
         }
         catch (...)
         {
-            this->cols = 0;
-            this->rows = 0;
+            VecImage();
         }
+    }
+    
+    VecImage::VecImage(CImg<unsigned char> &cImg){
+        this->data= *cImg;
+        this->cols = cImg.width();
+        this->rows = cImg.height();
+        this->source_file_location="";
+
+    }
+
+    VecImage::VecImage(const VecImage &vImg){
+        this->data= vImg.data;
+        this->cols = vImg.cols;
+        this->rows = vImg.rows;
+        this->source_file_location=vImg.source_file_location;
+
     }
 
     VecImage::VecImage(std::vector<double> &img_data, size_t width, size_t height)
@@ -37,6 +58,7 @@ namespace AppLogic
         this->cols = width;
         this->rows = height;
     }
+    
 
     VecImage::VecImage(const vec &img_data, size_t width, size_t height)
     {
@@ -115,14 +137,28 @@ namespace AppLogic
             }
         }
     }
-    void VecImage::applyNoise()
+
+
+    void VecImage::applyNoise(double noise_value, noise_type_t noise)
     {
         // mat N(this->cols, this->rows, arma::fill::randn);
         // mat im_data = this->getMatDouble();
         // mat D = 0.05 * N + im_data;
 
         // this->setImgDataMatDouble(D);
-        this->data.noise(20); // = this->data.get_noise(10);
+        switch (noise)
+        {
+        case noise_type_t::GAUSSIAN :
+            this->data.noise(noise_value);
+            break;
+        case noise_type_t::SALT_PEPPER :
+            this->data.noise(noise_value,noise_type_t::SALT_PEPPER);
+            break;
+        
+        default:
+            break;
+        }
+         // = this->data.get_noise(10);
     }
 
     void VecImage::display()
@@ -130,7 +166,8 @@ namespace AppLogic
         this->data.display(source_file_location.c_str());
     }
 
-    size_t VecImage::num_rows() { return rows; }
-    size_t VecImage::num_cols() { return cols; }
+    size_t VecImage::num_rows() { return this->rows; }
+    size_t VecImage::num_cols() { return this->cols; }
+    string VecImage::getSourceFileLocation() {return this->source_file_location;}
 
 }

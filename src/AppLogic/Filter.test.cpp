@@ -25,9 +25,9 @@ int main(int argc, char *argv[])
     filter.loadImagesFromFolder("./test/images/imagen_nasa_saturno");
     // filter.loadSingleImage(filename);
 
-    filter.applyNoiseToWorkingImages();
+    filter.applyNoiseToWorkingImages(0.5,noise_type_t::GAUSSIAN);
 
-    filter.calculateFilter(1000);
+    filter.calculateFilter(1000,calc_method_t::FAST_RCIMA_METHOD);
 
     // filter.saveToFile("./test/fmatrix.bin");
     // filter.loadFmatrixFromFile("./test/fmatrix.bin");
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 
     og_img.display();
 
-    og_img.applyNoise();
+    og_img.applyNoise(0.5, noise_type_t::GAUSSIAN);
 
     og_img.display();
 

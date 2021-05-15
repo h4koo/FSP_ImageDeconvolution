@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>607</height>
+    <width>784</width>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,28 +54,6 @@
        <height>254</height>
       </rect>
      </property>
-     <widget class="QLabel" name="loaded_image_label">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>110</y>
-        <width>111</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>No loaded image</string>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
     </widget>
    </widget>
    <widget class="QPushButton" name="load_images_btn">
@@ -118,28 +96,6 @@
        <height>254</height>
       </rect>
      </property>
-     <widget class="QLabel" name="filtered_image_label">
-      <property name="geometry">
-       <rect>
-        <x>80</x>
-        <y>110</y>
-        <width>111</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="text">
-       <string>No loaded image</string>
-      </property>
-      <property name="scaledContents">
-       <bool>true</bool>
-      </property>
-     </widget>
     </widget>
    </widget>
    <widget class="QLabel" name="label_3">
@@ -168,7 +124,7 @@
      <string>&lt;</string>
     </property>
    </widget>
-   <widget class="QListWidget" name="listWidget">
+   <widget class="QListWidget" name="listWidget_loaded_images">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -176,6 +132,18 @@
       <width>251</width>
       <height>121</height>
      </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>251</width>
+      <height>121</height>
+     </size>
     </property>
     <item>
      <property name="text">
@@ -227,7 +195,7 @@
      <string>Filtered image</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pushButton_filter_image">
     <property name="geometry">
      <rect>
       <x>339</x>
@@ -238,19 +206,6 @@
     </property>
     <property name="text">
      <string>Filter image</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton_2">
-    <property name="geometry">
-     <rect>
-      <x>339</x>
-      <y>360</y>
-      <width>91</width>
-      <height>22</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Filter all images</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_3">
@@ -266,36 +221,13 @@
      <string>Filter all images</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_4">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>101</width>
-      <height>16</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Select filter to use:</string>
-    </property>
-   </widget>
-   <widget class="QComboBox" name="comboBox">
-    <property name="geometry">
-     <rect>
-      <x>130</x>
-      <y>30</y>
-      <width>181</width>
-      <height>22</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QGroupBox" name="groupBox">
     <property name="geometry">
      <rect>
-      <x>410</x>
+      <x>422</x>
       <y>10</y>
-      <width>381</width>
-      <height>80</height>
+      <width>359</width>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
@@ -317,19 +249,6 @@
       <string>Rank:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_6">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>10</y>
-       <width>21</width>
-       <height>16</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>0</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_7">
      <property name="geometry">
       <rect>
@@ -343,7 +262,7 @@
       <string>Source images foder:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_8">
+    <widget class="QLabel" name="label_source_image_folder">
      <property name="geometry">
       <rect>
        <x>130</x>
@@ -369,7 +288,7 @@
       <string>Size:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_11">
+    <widget class="QLabel" name="label_f_mat_size">
      <property name="geometry">
       <rect>
        <x>50</x>
@@ -395,7 +314,7 @@
       <string>Calculation method:</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_13">
+    <widget class="QLabel" name="label_calc_method">
      <property name="geometry">
       <rect>
        <x>200</x>
@@ -408,13 +327,26 @@
       <string>...</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_rank_value">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>10</y>
+       <width>21</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>0</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QLabel" name="label_9">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>20</y>
-      <width>51</width>
+      <x>370</x>
+      <y>10</y>
+      <width>46</width>
       <height>16</height>
      </rect>
     </property>
@@ -422,13 +354,65 @@
      <string>Filter info</string>
     </property>
    </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>351</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="layoutWidget">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>40</y>
+       <width>291</width>
+       <height>24</height>
+      </rect>
+     </property>
+     <layout class="QFormLayout" name="formLayout">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>Select filter to use:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBox_filter_select"/>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <zorder>frame</zorder>
+   <zorder>next_loaded_image_btn</zorder>
+   <zorder>loaded_image_area</zorder>
+   <zorder>load_images_btn</zorder>
+   <zorder>filtered_image_area</zorder>
+   <zorder>label_3</zorder>
+   <zorder>previous_loaded_image_btn</zorder>
+   <zorder>listWidget_loaded_images</zorder>
+   <zorder>label_2</zorder>
+   <zorder>label</zorder>
+   <zorder>pushButton_filter_image</zorder>
+   <zorder>pushButton_3</zorder>
+   <zorder>groupBox</zorder>
+   <zorder>label_9</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>784</width>
      <height>21</height>
     </rect>
    </property>
