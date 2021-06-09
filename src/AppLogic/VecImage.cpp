@@ -114,6 +114,25 @@ namespace AppLogic
         return result;
     }
 
+    // **NOTE** don't add whitespace to the names since it breaks FilterInfo loading
+    string VecImage::getNoiseName(noise_type_t noise_type){
+        switch (noise_type)
+        {
+        case noise_type_t::GAUSSIAN :
+            return "Gaussian";
+        case noise_type_t::POISSON :
+            return "Poisson";
+        case noise_type_t::RICIAN :
+            return "Rician";
+        case noise_type_t::SALT_PEPPER :
+            return "SaltAndPepper";
+        case noise_type_t::UNIFORM :
+            return "Uniform";        
+        default:
+            return "NoiseName"; 
+        }
+    }
+
     mat VecImage::getMatDouble()
     {
         mat result(this->cols, this->rows);
@@ -141,24 +160,22 @@ namespace AppLogic
 
     void VecImage::applyNoise(double noise_value, noise_type_t noise)
     {
-        // mat N(this->cols, this->rows, arma::fill::randn);
-        // mat im_data = this->getMatDouble();
-        // mat D = 0.05 * N + im_data;
+        this->data.noise(noise_value,noise);
+    }
 
-        // this->setImgDataMatDouble(D);
-        switch (noise)
+    bool VecImage::save(const string filename){
+        try
         {
-        case noise_type_t::GAUSSIAN :
-            this->data.noise(noise_value);
-            break;
-        case noise_type_t::SALT_PEPPER :
-            this->data.noise(noise_value,noise_type_t::SALT_PEPPER);
-            break;
-        
-        default:
-            break;
+            this->data.save_png(filename.c_str());
+            return true;
         }
-         // = this->data.get_noise(10);
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            return false;
+        }
+        
+        
     }
 
     void VecImage::display()

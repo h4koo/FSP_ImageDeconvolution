@@ -18,6 +18,8 @@ test
 # Precompiled Headers
 *.gch
 *.pch
+src/UI/.qmake.stash
+
 
 # Compiled Dynamic libraries
 *.so

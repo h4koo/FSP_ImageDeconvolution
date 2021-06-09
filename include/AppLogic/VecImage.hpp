@@ -2,6 +2,7 @@
 #define VECIMAGE_H
 
 #define cimg_use_jpeg
+#define cimg_use_png
 #define cimg_display 0 // !! Important: Disables X11 libs so project can build with QT !!
 
 #include <string>
@@ -24,8 +25,8 @@ namespace AppLogic
      typedef enum
     {
         GAUSSIAN,
-        UNIFORM,
         SALT_PEPPER,
+        UNIFORM,        
         POISSON,
         RICIAN
     } noise_type_t;
@@ -64,6 +65,10 @@ namespace AppLogic
         const  unsigned char* getRawImageData(){
             return this->data._data;
         };
+
+        static string getNoiseName(noise_type_t noise_type);
+
+        bool save(const string filename);
     };
 }
 #endif

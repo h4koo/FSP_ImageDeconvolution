@@ -38,7 +38,7 @@ DISTNAME      = ImageDeconvolutionUI1.0.0
 DISTDIR = /mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/build/obj/ImageDeconvolutionUI1.0.0
 LINK          = g++
 LFLAGS        = 
-LIBS          = $(SUBLIBS) -L/usr/X11R6/lib -lm -lX11 -ljpeg -larmadillo -lstdc++fs -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
+LIBS          = $(SUBLIBS) -L/usr/X11R6/lib -lm -lX11 -ljpeg -larmadillo -lstdc++fs -lpng -lzip -lQt5Widgets -lQt5Gui -lQt5Core -lGL -lpthread 
 AR            = ar cqs
 RANLIB        = 
 SED           = sed
@@ -387,12 +387,16 @@ compiler_moc_header_make_all: ../../build/qt_moc/moc_filterwindow.cpp ../../buil
 compiler_moc_header_clean:
 	-$(DEL_FILE) ../../build/qt_moc/moc_filterwindow.cpp ../../build/qt_moc/moc_imagedeconvolutionwindow.cpp
 ../../build/qt_moc/moc_filterwindow.cpp: uihelpers.h \
-		../../include/AppLogic/FilterLogic.hpp \
-		../AppLogic/Filter.hpp \
+		imagedeconvolutionwindow.h \
+		../../include/AppLogic/ImageCleaningLogic.hpp \
+		../AppLogic/ImageDeconvolution.hpp \
 		../../include/AppLogic/FilterInfo.hpp \
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
 		../AppLogic/ImageLoader.hpp \
+		filterwindow.h \
+		../../include/AppLogic/FilterLogic.hpp \
+		../AppLogic/Filter.hpp \
 		../../libs/libfrcima/include/libfrcima.hpp \
 		filterwindow.h \
 		../../build/qt_moc/moc_predefs.h \
@@ -406,6 +410,11 @@ compiler_moc_header_clean:
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
 		../AppLogic/ImageLoader.hpp \
+		filterwindow.h \
+		imagedeconvolutionwindow.h \
+		../../include/AppLogic/FilterLogic.hpp \
+		../AppLogic/Filter.hpp \
+		../../libs/libfrcima/include/libfrcima.hpp \
 		imagedeconvolutionwindow.h \
 		../../build/qt_moc/moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -442,31 +451,38 @@ compiler_clean: compiler_moc_predefs_clean compiler_moc_header_clean compiler_ui
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
 		../AppLogic/ImageLoader.hpp \
+		filterwindow.h \
+		../../include/AppLogic/FilterLogic.hpp \
+		../AppLogic/Filter.hpp \
+		../../libs/libfrcima/include/libfrcima.hpp \
 		../../build/qt_ui/ui_imagedeconvolutionwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/imagedeconvolutionwindow.o imagedeconvolutionwindow.cpp
 
 ../../build/obj/main.o: main.cpp filterwindow.h \
 		uihelpers.h \
-		../../include/AppLogic/FilterLogic.hpp \
-		../AppLogic/Filter.hpp \
+		imagedeconvolutionwindow.h \
+		../../include/AppLogic/ImageCleaningLogic.hpp \
+		../AppLogic/ImageDeconvolution.hpp \
 		../../include/AppLogic/FilterInfo.hpp \
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
 		../AppLogic/ImageLoader.hpp \
-		../../libs/libfrcima/include/libfrcima.hpp \
-		imagedeconvolutionwindow.h \
-		../../include/AppLogic/ImageCleaningLogic.hpp \
-		../AppLogic/ImageDeconvolution.hpp
+		../../include/AppLogic/FilterLogic.hpp \
+		../AppLogic/Filter.hpp \
+		../../libs/libfrcima/include/libfrcima.hpp
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/main.o main.cpp
 
 ../../build/obj/filterwindow.o: filterwindow.cpp filterwindow.h \
 		uihelpers.h \
-		../../include/AppLogic/FilterLogic.hpp \
-		../AppLogic/Filter.hpp \
+		imagedeconvolutionwindow.h \
+		../../include/AppLogic/ImageCleaningLogic.hpp \
+		../AppLogic/ImageDeconvolution.hpp \
 		../../include/AppLogic/FilterInfo.hpp \
 		../../include/AppLogic/VecImage.hpp \
 		../../libs/CImg/CImg/CImg.h \
 		../AppLogic/ImageLoader.hpp \
+		../../include/AppLogic/FilterLogic.hpp \
+		../AppLogic/Filter.hpp \
 		../../libs/libfrcima/include/libfrcima.hpp \
 		../../build/qt_ui/ui_filterwindow.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ../../build/obj/filterwindow.o filterwindow.cpp

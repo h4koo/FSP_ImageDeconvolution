@@ -49,7 +49,9 @@ HEADERS += \
 
 INCLUDEPATH = ../../libs/CImg/CImg ../../include/AppLogic ../../libs/libfrcima/include ../AppLogic
 
-LIBS += -L/usr/X11R6/lib -lm -lpthread -lX11 -ljpeg -larmadillo -lstdc++fs
+LIBS += -L/usr/X11R6/lib -lm -lpthread -lX11 -ljpeg -larmadillo -lstdc++fs -lpng -lzip
+
+createdir.commands = $(CHK_DIR_EXISTS) $$shell_path(path/of/dir) & $(MKDIR) $$shell_path(path/of/dir)
 
 FORMS += \
     filterwindow.ui \

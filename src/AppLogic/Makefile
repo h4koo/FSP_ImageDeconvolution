@@ -1,7 +1,7 @@
 
 INCL=-I../../libs/CImg/CImg -I../../include/AppLogic -I../../libs/libfrcima/include
 APP_INCL=-I../../include/AppLogic
-LIBS=-L/usr/X11R6/lib -lm -lpthread -lX11 -ljpeg -larmadillo -lstdc++fs
+LIBS=-L/usr/X11R6/lib -lm -lpthread -lX11 -ljpeg -larmadillo -lstdc++fs -lpng -lz
 COMP_FLAGS=-std=c++17 -Wall -Wpedantic
 # IL_SRC=ImageLoader.test.cpp ImageLoader.cpp
 IL_SRC=$(OBJ_FOLDER)/ImageLoader.test.o $(OBJ_FOLDER)/ImageLoader.o $(OBJ_FOLDER)/VecImage.o

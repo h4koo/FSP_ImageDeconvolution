@@ -10,10 +10,14 @@
 #include <string>
 #include <vector>
 #include <experimental/filesystem>
+#include <zip.h>
 
-#define FILTER_SAVE_LOCATION "/mnt/c/Users/JorgeAgueroZamora/Documents/TEC/ProyectoDiseno/FroSigProImageDeconvolution/FSP_ImageDeconvolution/test/"
+#define FILTER_SAVE_LOCATION "~/.imgdeconv/"
 #define FILTER_INFO_EXTENSION ".finfo"
 #define FILTER_FILE_EXTENSION ".mat"
+#define TEMP_FILE_NAME "tmpfile"
+#define ZIP_FILE_BUFF_SIZE 1024
+
 
 namespace AppLogic
 {
@@ -28,22 +32,31 @@ namespace AppLogic
         vector<string> loaded_file_names;
         vector<string> not_loaded_files;
         string source_directory;
+        static bool _is_canceled;
 
-        static bool endsWith(const std::string &str, const std::string &suffix){
+        inline static bool endsWith(const std::string &str, const std::string &suffix){
         return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
     }
-        static bool isSupportedImageFormat(const string &str){
+        inline static bool isSupportedImageFormat(const string &str){
         return endsWith(str, ".jpg") || endsWith(str, ".bmp") || endsWith(str, ".png");
     }
+        inline static string stripExtensionFromFilename(const string &filename){
+            size_t last_index = filename.find_last_of(".");
+            return filename.substr(0,last_index);
+        }
          void clearLoadedData(){
             loaded_file_paths.clear();
             loaded_file_names.clear();
             not_loaded_files.clear();
 
         }
+        void addImageFileInfo(const string &full_path);
+        static bool createFileFromZipFile(string filename, fstream &stream, zip_file *zip_file, size_t buff_size);
 
 
     public:
+        // ImageLoader();
+        // ~ImageLoader();
         VecImage loadSingleImage(const char *filename);
         vector<VecImage> loadImagesFromFolder(const char *folder_path);
         vector<string> getLoadedImageNames();
@@ -52,6 +65,16 @@ namespace AppLogic
         string getSourceDirectory();
         vector<FilterInfo> loadFilterInfo(const char *folder_path);
 
+        static bool deleteFilter(const string filter_name);
+        static bool existsNameFilter(string filter_name);
+
+        vector<VecImage> loadImagesFromZip(string file_path);
+
+        static bool createExportZip(string export_filename, string filter_name);
+        static bool importFilterFromZip(string import_filename);
+        static void cancelOperation(bool status);
+    
+    
 
 
         // +loadImagesFromZip(file_path) : VecImage[]
@@ -59,6 +82,8 @@ namespace AppLogic
         // +saveImageToFile(file_path : string, image : VecImage) : bool
         // +saveMultipleImagesToFile(file_path : string, image : VecImage) : bool
     };
+
+    // bool AppLogic::ImageLoader::_is_canceled=false;
 
 }
 

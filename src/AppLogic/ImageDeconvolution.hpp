@@ -9,8 +9,6 @@
 #include "VecImage.hpp"
 #include "ImageLoader.hpp"
 
-
-
 namespace AppLogic
 {
 
@@ -20,27 +18,49 @@ namespace AppLogic
         vector<FilterInfo> loaded_filters;
         vector<VecImage> working_images;
         vector<VecImage> filtered_images;
+        vector<string> loaded_file_paths;
+        vector<string> loaded_file_names;
+        bool is_canceled;
         mat F_matrix;
 
-        void loadExistingFilters();
+        
 
     public:
         ImageDeconvolution(/* args */);
         ~ImageDeconvolution();
-    
 
-   vector<FilterInfo> getLoadedFilters(){
-       return this->loaded_filters;
-   };
+        inline void clearWorkingImages()
+        {
+            this->working_images.clear();
+            this->loaded_file_paths.clear();
+            this->loaded_file_names.clear();
+        }
 
-    VecImage  applyFilterToImage(size_t image_id);
+        string getImagePath(size_t index);
+        inline vector<FilterInfo> getLoadedFilters()
+        {
+            return this->loaded_filters;
+        };
 
-    bool applyFilterToWorkingImages();
-    bool loadFilter(size_t id);
+        VecImage applyFilterToImage(size_t image_id);
+        VecImage * getLoadedImage(const size_t index);
 
-    vector<string> loadImagesFromFolder(string folder_path);
-    vector<string> loadSingleImage(string file_path);
-};
+        bool applyFilterToWorkingImages();
+        bool loadFilter(size_t id);
+        bool saveFilteredImage(size_t image_id, string folder_path);
+        bool saveAllFilteredImages(string folder_path);
+        vector<string> loadImagesFromFolder(string folder_path);
+        vector<string> loadImagesFromZip(string file_path);
+        string loadSingleImage(string file_path);
+
+        bool deleteFilter(size_t index);
+        // bool exportFilter(size_t index, const string path_to_file);
+        // bool importFilter(const string path_to_file);
+        void cancelFilterAllImages();
+        vector<FilterInfo> loadExistingFilters();
+
+
+    };
 }
 
 #endif
