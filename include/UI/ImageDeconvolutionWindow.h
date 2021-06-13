@@ -11,7 +11,7 @@
 #include "uihelpers.h"
 #include "ImageCleaningLogic.hpp"
 
-#include "filterwindow.h"
+#include "FilterWindow.h"
 
 namespace Ui
 {

@@ -52,7 +52,7 @@ namespace AppLogic
 
         }
         void addImageFileInfo(const string &full_path);
-        static bool createFileFromZipFile(string filename, fstream &stream, zip_file *zip_file, size_t buff_size);
+        static bool createFileFromZipFile(string filename, fstream &stream, zip_file *zip_file);
 
 
     public:

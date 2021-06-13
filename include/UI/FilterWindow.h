@@ -11,7 +11,7 @@
 #include <iostream>
 
 #include "uihelpers.h"
-#include "imagedeconvolutionwindow.h"
+#include "ImageDeconvolutionWindow.h"
 #include "FilterLogic.hpp"
 
 

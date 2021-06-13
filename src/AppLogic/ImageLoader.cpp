@@ -173,7 +173,7 @@ namespace AppLogic
         }
     }
 
-    bool ImageLoader::createFileFromZipFile(string filename, fstream &stream, zip_file *zip_file, size_t buff_size)
+    bool ImageLoader::createFileFromZipFile(string filename, fstream &stream, zip_file *zip_file)
     {
 
         stream.open(filename.c_str(), std::ios::trunc | std::ios::out | std::ios::in);
@@ -252,7 +252,7 @@ namespace AppLogic
                 continue;
             }
 
-            if (!createFileFromZipFile(temp_filename, temp_file, z_fl, z_fstat.size))
+            if (!createFileFromZipFile(temp_filename, temp_file, z_fl))
             {
                 printf("Couldn't load temp file");
                 continue;
@@ -347,9 +347,7 @@ namespace AppLogic
         int zfile_fdata_index = -1;
 
         string finfo_filename = "";
-        size_t finfo_filesize;
         string fdata_filename = "";
-        size_t fdata_filesize;
         int err;
 
         if ((z_arch = zip_open(import_filename.c_str(), 0, &err)) == NULL)
@@ -369,14 +367,12 @@ namespace AppLogic
             {
                 zfile_finfo_index = i;
                 finfo_filename = stripExtensionFromFilename(z_fstat.name);
-                finfo_filesize = z_fstat.size;
             }
 
             if (endsWith(z_fstat.name, FILTER_FILE_EXTENSION) && zfile_fdata_index == -1)
             {
                 zfile_fdata_index = i;
                 fdata_filename = stripExtensionFromFilename(z_fstat.name);
-                fdata_filesize = z_fstat.size;
             }
         }
 
@@ -407,7 +403,7 @@ namespace AppLogic
 
         fstream fout;
         string filename_finfo = FILTER_SAVE_LOCATION + finfo_filename + FILTER_INFO_EXTENSION;
-        if (!ImageLoader::createFileFromZipFile(filename_finfo, fout, zip_fopen_index(z_arch, zfile_finfo_index, 0), finfo_filesize))
+        if (!ImageLoader::createFileFromZipFile(filename_finfo, fout, zip_fopen_index(z_arch, zfile_finfo_index, 0)))
         {
             zip_close(z_arch);
             return false;
@@ -420,7 +416,7 @@ namespace AppLogic
             return false;
         }
         string filename_fdata = FILTER_SAVE_LOCATION + fdata_filename + FILTER_FILE_EXTENSION;
-        if (!ImageLoader::createFileFromZipFile(filename_fdata, fout, zip_fopen_index(z_arch, zfile_fdata_index, 0), fdata_filesize))
+        if (!ImageLoader::createFileFromZipFile(filename_fdata, fout, zip_fopen_index(z_arch, zfile_fdata_index, 0)))
         {
             remove(filename_finfo.c_str());
             zip_close(z_arch);
