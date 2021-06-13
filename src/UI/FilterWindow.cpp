@@ -1,4 +1,4 @@
-#include "filterwindow.h"
+#include "FilterWindow.h"
 #include "ui_filterwindow.h"
 
 #define WINDOWS_DEVICES "CON|AUX|PRN|COM1|COM2|LPT1|LPT2|NUL"

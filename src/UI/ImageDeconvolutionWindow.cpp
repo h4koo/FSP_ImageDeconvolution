@@ -1,4 +1,4 @@
-#include "imagedeconvolutionwindow.h"
+#include "ImageDeconvolutionWindow.h"
 #include "ui_imagedeconvolutionwindow.h"
 
 #define ELIDE_WIDTH 400

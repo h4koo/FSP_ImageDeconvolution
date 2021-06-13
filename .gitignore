@@ -10,7 +10,7 @@ libs/lib_win64
 test
 *.test.cpp
 .qmake.stash
-
+Makefile
 
 
 # Compiled Object files
