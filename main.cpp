@@ -1,5 +1,5 @@
-#include "filterwindow.h"
-#include "imagedeconvolutionwindow.h"
+#include "FilterWindow.h"
+#include "ImageDeconvolutionWindow.h"
 
 #include <QApplication>
 
