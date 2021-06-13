@@ -2,7 +2,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-CONFIG += c++17 
+CONFIG += c++17 optimize_full 
 QMAKE_EXTRA_TARGETS += createdir
 
 PRE_TARGETDEPS += createdir
@@ -55,7 +55,7 @@ INCLUDEPATH = ./libs/CImg ./include/AppLogic ./include/UI ./libs/libfrcima/inclu
 
 LIBS += -L/usr/X11R6/lib -lm -lpthread -lX11 -ljpeg -larmadillo -lstdc++fs -lpng -lzip
 
-createdir.commands = $(MKDIR) $$shell_path($$DATA_DIR)
+createdir.commands = $(MKDIR) $$shell_path($$DATA_DIR) $$shell_path($$DESTDIR) $$shell_path($$OBJECTS_DIR) $$shell_path($$MOC_DIR) $$shell_path($$UI_DIR) 
 
 FORMS += \
     ./include/UI/forms/filterwindow.ui \
