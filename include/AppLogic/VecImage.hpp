@@ -9,7 +9,6 @@
 #include <vector>
 #include <armadillo>
 #include <math.h>
-// #include "Noise.hpp"
 
 #include "CImg.h"
 
@@ -17,22 +16,18 @@ namespace AppLogic
 {
     using arma::mat;
     using arma::vec;
+    using cimg_library::CImg;
     using std::string;
     using std::vector;
-    using cimg_library::CImg;
 
-
-     typedef enum
+    typedef enum
     {
         GAUSSIAN,
         SALT_PEPPER,
-        UNIFORM,        
+        UNIFORM,
         POISSON,
         RICIAN
     } noise_type_t;
-
-
-
 
     class VecImage
     {
@@ -44,27 +39,24 @@ namespace AppLogic
 
     public:
         VecImage();
-        VecImage(string filename);      
+        VecImage(string filename);
         VecImage(vector<double> &img_data, size_t width, size_t height);
         VecImage(const vec &img_data, size_t width, size_t height);
         VecImage(CImg<unsigned char> &cImg);
         VecImage(const VecImage &vImg);
 
-
-        size_t num_rows(); // { return rows; };
-        size_t num_cols(); // { return cols; };
+        size_t numRows();
+        size_t numCols(); 
         string getSourceFileLocation();
 
-        vector<double> get_double_data();
-    
+        vector<double> getDoubleData();
+
         vec getVecDoubleData();
         mat getMatDouble();
-        void applyNoise( double noise_value,noise_type_t noise= noise_type_t::GAUSSIAN);
+        void applyNoise(double noise_value, noise_type_t noise = noise_type_t::GAUSSIAN);
         void display();
         void setImgDataMatDouble(const mat &new_data);
-        const  unsigned char* getRawImageData(){
-            return this->data._data;
-        };
+        const unsigned char *getRawImageData();
 
         static string getNoiseName(noise_type_t noise_type);
 

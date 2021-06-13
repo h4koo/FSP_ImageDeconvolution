@@ -12,11 +12,10 @@
 #include <experimental/filesystem>
 #include <zip.h>
 
-#define FILTER_SAVE_LOCATION "~/.imgdeconv/"
 #define FILTER_INFO_EXTENSION ".finfo"
 #define FILTER_FILE_EXTENSION ".mat"
 #define TEMP_FILE_NAME "tmpfile"
-#define ZIP_FILE_BUFF_SIZE 1024
+#define ZIP_FILE_BUFF_SIZE 4096
 
 
 namespace AppLogic
@@ -24,6 +23,7 @@ namespace AppLogic
     using std::string;
     using std::vector;
     using std::fstream;
+    namespace fs = std::experimental::filesystem;
 
     class ImageLoader
     {
@@ -33,6 +33,7 @@ namespace AppLogic
         vector<string> not_loaded_files;
         string source_directory;
         static bool _is_canceled;
+        
 
         inline static bool endsWith(const std::string &str, const std::string &suffix){
         return str.size() >= suffix.size() && 0 == str.compare(str.size() - suffix.size(), suffix.size(), suffix);
@@ -57,33 +58,23 @@ namespace AppLogic
     public:
         // ImageLoader();
         // ~ImageLoader();
+        const static string FILTER_SAVE_LOCATION;
         VecImage loadSingleImage(const char *filename);
         vector<VecImage> loadImagesFromFolder(const char *folder_path);
         vector<string> getLoadedImageNames();
         vector<string> getLoadedImagePaths();
         vector<string> getNotLoadedImagePaths();
         string getSourceDirectory();
-        vector<FilterInfo> loadFilterInfo(const char *folder_path);
-
+        vector<FilterInfo> loadFilterInfo();
         static bool deleteFilter(const string filter_name);
         static bool existsNameFilter(string filter_name);
-
         vector<VecImage> loadImagesFromZip(string file_path);
-
         static bool createExportZip(string export_filename, string filter_name);
         static bool importFilterFromZip(string import_filename);
         static void cancelOperation(bool status);
     
     
-
-
-        // +loadImagesFromZip(file_path) : VecImage[]
-        // +loadSingleImage(file_path : string) : VecImage
-        // +saveImageToFile(file_path : string, image : VecImage) : bool
-        // +saveMultipleImagesToFile(file_path : string, image : VecImage) : bool
     };
-
-    // bool AppLogic::ImageLoader::_is_canceled=false;
 
 }
 

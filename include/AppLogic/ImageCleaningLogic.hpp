@@ -1,7 +1,6 @@
 #ifndef IMAGECLEANINGLOGIC_H
 #define IMAGECLEANINGLOGIC_H
 
-
 #include "ImageDeconvolution.hpp"
 
 namespace AppLogic
@@ -18,7 +17,6 @@ namespace AppLogic
 
     public:
         vector<string> getFilterNames();
-        // vector<string> loadSingleImage(string file_path);
         vector<string> loadImagesFromFolder(string folder_path);
         vector<string> loadImagesFromZip(string file_path);
         string addImageToWorkingImages(string file_path);
@@ -27,10 +25,10 @@ namespace AppLogic
         string getImagePath(const size_t index);
         bool loadFilter(int filter_id);
 
-        VecImage * getLoadedImage(const size_t index);
+        VecImage *getLoadedImage(const size_t index);
         VecImage applyFilterToImage(int image_id);
 
-        FilterInfo * getFilterInfo(size_t indx);
+        FilterInfo *getFilterInfo(size_t indx);
 
         bool saveAllFilteredImages(string folder_path);
         bool saveFilteredImage(size_t image_id, string folder_path);
@@ -40,22 +38,8 @@ namespace AppLogic
         // bool exportFilter(size_t index, const string path_to_file);
         // bool importFilter(const string path_to_file);
         void cancelFilterAllImages();
-
     };
 
 }
 
 #endif
-
-// +loadImagesFromFolder(folder_path : string) : string[]
-// +loadImagesFromZip(file_path : string) : string[]
-// +loadSingleImage(file_path : string) : string[]
-// +getFilterList() : FilterInfo[]
-// +applyFilterToImage(image_id : int, filter_id : int)
-// +applyFilterToAllImages(filter_id : int)
-// +getFilteredImage(image_id : int) : char[]
-// +saveFilteredImage()
-// +saveAllFilteredImages()
-
-// -deconvolutioner : ImageDeconvolution
-// -filters : FilterInfo[]

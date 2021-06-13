@@ -3,14 +3,12 @@
 
 #include "Filter.hpp"
 #include <pthread.h>
-
-// #define FILTER_SAVE_LOCATION "../../test/"
+#include <thread>
 
 namespace AppLogic
 {
     using std::string;
     using std::vector;
-
 
     class FilterLogic
     {
@@ -29,16 +27,18 @@ namespace AppLogic
         string addImageToWorkingImages(string file_path);
         void clearWorkingImages();
         string getImagePath(const size_t index);
-        VecImage * getLoadedImage(const size_t index);
-        
+        VecImage *getLoadedImage(const size_t index);
+
         VecImage applyNoiseToImage(int image_id, noise_type_t noise, double noise_value);
         bool createFilter(string name, int rank, calc_method_t calc_method);
         void cancelFilterCreation();
 
-        void setNoise(noise_type_t n_type){
+        void setNoise(noise_type_t n_type)
+        {
             this->last_noise = n_type;
         };
-        void setNoiseValue(double val){
+        void setNoiseValue(double val)
+        {
             this->last_noise_value = val;
         };
 
@@ -46,24 +46,8 @@ namespace AppLogic
         void cancelSaveDirtyImages();
         bool saveDirtyImage(size_t image_id, string folder_path);
 
-        FilterInfo * getFilterInfo();
+        FilterInfo *getFilterInfo();
     };
-
 }
+
 #endif
-
-/// +loadImagesFromFolder(folder_path : string) : string[]
-// +loadImagesFromZip(file_path : string) : string[]
-// +createFilter(name, rank : unsigned int, calc_method : enum) : bool
-
-// +deleteFilter(filter_id : int) : bool
-// +exportFilter() : bool
-// +importFilter(file_path : string) : bool
-// +applyNoiseToImage(image_id : int, noise_type, value : double) : string
-// +applyNoiseToAllImages(noise_type, value : double) : string[]
-// +getNoisyImage(image_id : int)
-// +saveDirtyImage(image_id : int, folder_path : string) : bool
-// +saveAllDirtyImages(folder_path : string) : bool
-
-// -new_filter : Filter
-// hello

@@ -8,6 +8,10 @@ build/*
 libs/armadillo
 libs/lib_win64
 test
+*.test.cpp
+.qmake.stash
+
+
 
 # Compiled Object files
 *.slo

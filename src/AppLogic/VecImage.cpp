@@ -5,11 +5,12 @@
 
 namespace AppLogic
 {
-    VecImage::VecImage(){
-            this->cols = 0;
-            this->rows = 0; 
-            this->source_file_location = "empty";
-            this->data.clear();
+    VecImage::VecImage()
+    {
+        this->cols = 0;
+        this->rows = 0;
+        this->source_file_location = "empty";
+        this->data.clear();
     }
 
     VecImage::VecImage(std::string filename)
@@ -26,21 +27,21 @@ namespace AppLogic
             VecImage();
         }
     }
-    
-    VecImage::VecImage(CImg<unsigned char> &cImg){
-        this->data= *cImg;
+
+    VecImage::VecImage(CImg<unsigned char> &cImg)
+    {
+        this->data = *cImg;
         this->cols = cImg.width();
         this->rows = cImg.height();
-        this->source_file_location="";
-
+        this->source_file_location = "";
     }
 
-    VecImage::VecImage(const VecImage &vImg){
-        this->data= vImg.data;
+    VecImage::VecImage(const VecImage &vImg)
+    {
+        this->data = vImg.data;
         this->cols = vImg.cols;
         this->rows = vImg.rows;
-        this->source_file_location=vImg.source_file_location;
-
+        this->source_file_location = vImg.source_file_location;
     }
 
     VecImage::VecImage(std::vector<double> &img_data, size_t width, size_t height)
@@ -58,7 +59,6 @@ namespace AppLogic
         this->cols = width;
         this->rows = height;
     }
-    
 
     VecImage::VecImage(const vec &img_data, size_t width, size_t height)
     {
@@ -76,7 +76,6 @@ namespace AppLogic
 
         for (cimg_library::CImg<unsigned char>::iterator pix = data.begin(); pix < data.end(); ++pix)
         {
-            // char s = img_data[vec_it] > 0 ? char(img_data[vec_it] * VECIMG_NORM) : char(img_data[vec_it] * -VECIMG_NORM);
             char ranged_value = char(round(mult_const * (img_data(vec_it) - min)));
             *pix = ranged_value;
             ++vec_it;
@@ -86,14 +85,18 @@ namespace AppLogic
         this->rows = height;
     }
 
-    std::vector<double> VecImage::get_double_data()
+    const unsigned char *VecImage::getRawImageData()
+    {
+        return this->data._data;
+    };
+
+    std::vector<double> VecImage::getDoubleData()
     {
         std::vector<double> result(this->cols * this->rows);
         for (size_t y_coord = 0; y_coord < this->rows; y_coord++)
         {
             for (size_t x_coord = 0; x_coord < this->cols; x_coord++)
             {
-                // unsigne char d = data.at(i, j);
                 result[y_coord * this->cols + x_coord] = double(this->data(x_coord, y_coord)) / VECIMG_NORM;
             }
         }
@@ -107,7 +110,6 @@ namespace AppLogic
         {
             for (size_t x_coord = 0; x_coord < this->cols; x_coord++)
             {
-                // unsigne char d = data.at(i, j);
                 result[y_coord * this->cols + x_coord] = double(data(x_coord, y_coord)) / VECIMG_NORM;
             }
         }
@@ -115,28 +117,28 @@ namespace AppLogic
     }
 
     // **NOTE** don't add whitespace to the names since it breaks FilterInfo loading
-    string VecImage::getNoiseName(noise_type_t noise_type){
+    string VecImage::getNoiseName(noise_type_t noise_type)
+    {
         switch (noise_type)
         {
-        case noise_type_t::GAUSSIAN :
+        case noise_type_t::GAUSSIAN:
             return "Gaussian";
-        case noise_type_t::POISSON :
+        case noise_type_t::POISSON:
             return "Poisson";
-        case noise_type_t::RICIAN :
+        case noise_type_t::RICIAN:
             return "Rician";
-        case noise_type_t::SALT_PEPPER :
+        case noise_type_t::SALT_PEPPER:
             return "SaltAndPepper";
-        case noise_type_t::UNIFORM :
-            return "Uniform";        
+        case noise_type_t::UNIFORM:
+            return "Uniform";
         default:
-            return "NoiseName"; 
+            return "NoiseName";
         }
     }
 
     mat VecImage::getMatDouble()
     {
         mat result(this->cols, this->rows);
-
         for (size_t col = 0; col < this->cols; ++col)
         {
             for (size_t row = 0; row < this->rows; ++row)
@@ -146,6 +148,7 @@ namespace AppLogic
         }
         return result;
     }
+
     void VecImage::setImgDataMatDouble(const mat &new_data)
     {
         for (size_t col = 0; col < this->cols; ++col)
@@ -157,25 +160,23 @@ namespace AppLogic
         }
     }
 
-
     void VecImage::applyNoise(double noise_value, noise_type_t noise)
     {
-        this->data.noise(noise_value,noise);
+        this->data.noise(noise_value, noise);
     }
 
-    bool VecImage::save(const string filename){
+    bool VecImage::save(const string filename)
+    {
         try
         {
             this->data.save_png(filename.c_str());
             return true;
         }
-        catch(const std::exception& e)
+        catch (const std::exception &e)
         {
             std::cerr << e.what() << '\n';
             return false;
         }
-        
-        
     }
 
     void VecImage::display()
@@ -183,8 +184,8 @@ namespace AppLogic
         this->data.display(source_file_location.c_str());
     }
 
-    size_t VecImage::num_rows() { return this->rows; }
-    size_t VecImage::num_cols() { return this->cols; }
-    string VecImage::getSourceFileLocation() {return this->source_file_location;}
+    size_t VecImage::numRows() { return this->rows; }
+    size_t VecImage::numCols() { return this->cols; }
+    string VecImage::getSourceFileLocation() { return this->source_file_location; }
 
 }

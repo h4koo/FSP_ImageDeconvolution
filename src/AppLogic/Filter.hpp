@@ -9,19 +9,17 @@
 
 #include "FilterInfo.hpp"
 #include "VecImage.hpp"
-// #include "Noise.hpp"
 #include "ImageLoader.hpp"
 #include "libfrcima.hpp"
-
 
 namespace AppLogic
 {
     using arma::mat;
     using std::string;
     using std::vector;
-    using std::chrono::high_resolution_clock;
-    using std::chrono::duration_cast;
     using std::chrono::duration;
+    using std::chrono::duration_cast;
+    using std::chrono::high_resolution_clock;
     using std::chrono::seconds;
 
     typedef enum
@@ -29,7 +27,6 @@ namespace AppLogic
         RCIMA_METHOD,
         FAST_RCIMA_METHOD
     } calc_method_t;
-
 
     class Filter
     {
@@ -50,9 +47,9 @@ namespace AppLogic
         Filter();
 
         VecImage applyNoiseToImage(size_t image_id, size_t noise_value, noise_type_t noise_type = noise_type_t::GAUSSIAN);
-
         void applyNoiseToWorkingImages(size_t noise_value, noise_type_t noise_type = noise_type_t::GAUSSIAN);
-        inline void setFilterName(string name){
+        inline void setFilterName(string name)
+        {
             this->calc_info.filter_name = name;
         }
 
@@ -60,11 +57,13 @@ namespace AppLogic
         {
             return this->F_matrix;
         };
-        inline FilterInfo *getFilterInfo(){
+        inline FilterInfo *getFilterInfo()
+        {
             return &this->calc_info;
         };
 
-        inline void clearWorkingImages(){
+        inline void clearWorkingImages()
+        {
             this->working_images.clear();
             this->loaded_file_paths.clear();
             this->loaded_file_names.clear();
@@ -73,46 +72,20 @@ namespace AppLogic
         vector<string> loadImagesFromFolder(string folder_path);
         string loadSingleImage(string folder_path);
         vector<string> loadImagesFromZip(string file_path);
-
         string getImagePath(size_t index);
-        VecImage * getLoadedImage(const size_t index);
-
+        VecImage *getLoadedImage(const size_t index);
         bool calculateFilter(size_t rank, calc_method_t calc_method);
-
-        bool saveToFile(string file_path = FILTER_SAVE_LOCATION);
-
+        bool saveToFile(string file_path = ImageLoader::FILTER_SAVE_LOCATION);
         bool loadFmatrixFromFile(string file_path);
-
         bool saveAllDirtyImages(string folder_path);
         bool saveDirtyImage(size_t image_id, string folder_path);
-        bool saveFilterInfo(string folder_path = FILTER_SAVE_LOCATION);
+        bool saveFilterInfo(string folder_path = ImageLoader::FILTER_SAVE_LOCATION);
         bool exportFilter();
         bool importFilter(string file_path);
         void cancelSaveDirtyImages();
-
         static string getCalculationMethodName(calc_method_t calc_method);
-        
     };
 
 }
 
 #endif
-
-// +applyNoiseToImage(image_id : int, noise_type, value : double) : VecImage
-// +applyNoiseToWorkingImages() : VecImage[]
-// +loadImagesFromFolder(folder_path : string) : string[]
-// +loadImagesFromZip(file_path : string) : string[]
-// +getNoisyImage(image_id : int)
-// +calculateFilter(rank : unsigned int, calc_method : enum)
-// +saveToFile(name : string, file_path : string)
-// +saveAllDirtyImages(folder_path : string) : bool
-// +saveDirtyImage(image_id : int, folder_path : string) : bool
-// -saveFilterInfo()
-// +exportFilter() : bool
-// +importFilter(file_path : string) : bool
-
-// -calc_info : FilterInfo
-// -working_images : VecImage[]
-// -working_noise : Noise
-// -image_set :double[][]
-// -f_matrix : double[][]

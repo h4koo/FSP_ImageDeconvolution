@@ -1,9 +1,4 @@
-
 #include "libfrcima.hpp"
-
-#include <iostream>
-
-#define LOW_RANK_APPROX_ITERATIONS 3
 
 namespace frcima
 {
@@ -11,8 +6,17 @@ namespace frcima
     using arma::vec;
     using std::vector;
 
-    double error;
+    double _calculated_error;
     // using namespace arma;
+
+    /**
+     * @brief calculates the error from the calculated filter
+     * 
+     * @param A Calculated filter we want to get the error from
+     * @param C Training data
+     * @param X Training data
+     */
+    void calculate_error(mat &A, const mat& C, const mat &X);
 
     /**
      * @brief calculates low rank matrix approximation using the modified bilateral random projections (MBRP)
@@ -55,8 +59,8 @@ namespace frcima
      * @brief Calculates pseudo inverse matrix using the Tensor Product Matrix (TPM) method
      * 
      * @param A Matrix to calculate pseudoinverse
-     * @param Ap Output matrix
-     * @return true 
+     * @param Ap Output calculated pseudoinverse matrix
+     * @return true and Ap matrix contains the calculated pseudo inverse matrix
      * @return false 
      */
     bool pseudo_inverse_tpm(const mat &A, mat &Ap);
@@ -76,11 +80,6 @@ namespace frcima
     mat rcima(const mat &X, const mat &C, const size_t input_rank)
     {
         mat result;
-        // mat &X = t_data_x, &C = t_data_c;
-
-        // if (!generate_training_matrices(t_data_x, t_data_c, X, C))
-        //     return result;
-
         mat p_inv_C = arma::pinv(C);
 
         mat U, V;
@@ -91,23 +90,14 @@ namespace frcima
         mat Vk = V.head_cols(rank_k);
 
         mat P = X * Vk * Vk.t();
-        U.~Mat();
-        V.~Mat();
 
         mat B, D;
         if (!low_rank(P, input_rank, B, D))
             return result;
 
-        P.~Mat();
-
         result = B * D;
         result = result * p_inv_C;
-
-        B.~Mat();
-        D.~Mat();
-
-        error = arma::norm(result * C - X, "fro");
-        error = (error * error) / X.n_cols;
+        // calculate_error(result, C, X);
 
         return result;
     }
@@ -127,11 +117,6 @@ namespace frcima
     mat fast_rcima(const mat &X, const mat &C, const size_t input_rank)
     {
         mat result;
-        // mat X, C;
-
-        // if (!generate_training_matrices(t_data_x, t_data_c, X, C))
-        //     return result;
-
         mat Cp;
 
         pseudo_inverse_tpm(C, Cp);
@@ -141,16 +126,18 @@ namespace frcima
         mat B, D;
         if (!low_rank_approx(P, input_rank, B, D))
             return result;
-
         result = B * D * Cp;
 
-        error = arma::norm(result * C - X, "fro");
-        error = (error * error) / X.n_cols;
+        // calculate_error(result, C, X);
 
         return result;
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------
+    void calculate_error(mat &A, const mat& C, const mat &X){
+        _calculated_error = arma::norm(A * C - X, "fro");
+        _calculated_error = (_calculated_error * _calculated_error) / X.n_cols;
+    }
 
     bool low_rank(const mat &A, const size_t r, mat &B, mat &C)
     {
@@ -165,7 +152,6 @@ namespace frcima
             return false;
 
         mat smat = mat(arma::diagmat(s))(arma::span(0, r - 1), arma::span(0, r - 1));
-        // mat Ss = smat(arma::span(0, r - 1), arma::span(0, r - 1));
 
         B = U.head_cols(r) * smat;
         C = V.head_cols(r).t();
@@ -205,25 +191,21 @@ namespace frcima
 
         mat X_tr(tset_rows, tset_columns);
         mat C_tr(tset_rows, tset_columns);
-
         // if size of image sets don't match
         if (C.size() != tset_columns)
         {
-            printf("libfrcima::generate_training_matrix() -> Error size of x data does not match size of c data");
+            // Error size of x data does not match size of c data
             //return empty result
             return false;
         }
-
         //go through vectors and fill the matrices
         for (size_t col = 0; col < tset_columns; ++col)
         {
             tset_rows = X[col].size();
-
             // check image size
             if (C[col].size() != tset_rows)
             {
-                printf("libfrcima::generate_training_matrix() -> Error size of images must be the same for all images");
-                //return false
+                // Error size of images must be the same for all images;
                 return false;
             }
 
@@ -233,10 +215,8 @@ namespace frcima
                 C_tr(row, col) = double(C[col][row]);
             }
         }
-
         X_mat = X_tr;
         C_mat = C_tr;
-
         return true;
     }
 

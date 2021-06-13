@@ -4,10 +4,8 @@
 namespace AppLogic
 {
 
-    ImageDeconvolution::ImageDeconvolution(/* args */)
+    ImageDeconvolution::ImageDeconvolution() : is_canceled(false)
     {
-        this->is_canceled=false;
-        // this->loadExistingFilters();
     }
 
     ImageDeconvolution::~ImageDeconvolution()
@@ -23,16 +21,17 @@ namespace AppLogic
     VecImage ImageDeconvolution::applyFilterToImage(size_t image_id)
     {
         VecImage result;
-        
-        if (this->F_matrix.size() == 0 || image_id > this->working_images.size() )
+
+        if (this->F_matrix.size() == 0 || image_id > this->working_images.size())
         {
             return result;
         }
         VecImage *w_img = &(this->working_images[image_id]);
         vec og_vec = w_img->getVecDoubleData();
-        if (this->F_matrix.n_cols != og_vec.size()) return result;
-        // vec filtered_vec = F_matrix * og_vec;
-        result = VecImage(F_matrix * og_vec, w_img->num_cols(), w_img->num_rows());
+        if (this->F_matrix.n_cols != og_vec.size())
+            return result;
+
+        result = VecImage(F_matrix * og_vec, w_img->numCols(), w_img->numRows());
         return result;
     }
 
@@ -49,12 +48,13 @@ namespace AppLogic
         {
             vec og_vec = og_img.getVecDoubleData();
             vec filtered_vec = F_matrix * og_vec;
-            filtered_images.push_back(VecImage(filtered_vec, og_img.num_cols(), og_img.num_rows()));
+            filtered_images.push_back(VecImage(filtered_vec, og_img.numCols(), og_img.numRows()));
         }
         return true;
     }
 
-    vector<string> ImageDeconvolution::loadImagesFromZip(string file_path){
+    vector<string> ImageDeconvolution::loadImagesFromZip(string file_path)
+    {
         this->working_images.clear();
         ImageLoader il;
 
@@ -81,12 +81,10 @@ namespace AppLogic
     {
         ImageLoader il;
 
-        // this->working_images.clear();
         this->working_images.push_back(il.loadSingleImage(file_path.c_str()));
         this->loaded_file_names.push_back(il.getLoadedImageNames()[0]);
         this->loaded_file_paths.push_back(il.getLoadedImagePaths()[0]);
 
-        // this->image_set = this->getWorkingImagesMat(); // can be done on a different thread to avoid blocking
         return this->loaded_file_names.back();
     }
 
@@ -94,18 +92,17 @@ namespace AppLogic
     {
         this->loaded_filters.clear();
         ImageLoader il;
-        this->loaded_filters = il.loadFilterInfo(FILTER_SAVE_LOCATION);
+        this->loaded_filters = il.loadFilterInfo();
         return this->loaded_filters;
     }
 
     bool ImageDeconvolution::loadFilter(size_t id)
     {
         if (id > this->loaded_filters.size())
-        {
             return false;
-        }
+
         this->F_matrix.reset();
-        string mat_file_path = FILTER_SAVE_LOCATION + this->loaded_filters[id].filter_name + FILTER_FILE_EXTENSION;
+        string mat_file_path = ImageLoader::FILTER_SAVE_LOCATION + this->loaded_filters[id].filter_name + FILTER_FILE_EXTENSION;
         return this->F_matrix.load(mat_file_path);
     }
 
@@ -118,41 +115,40 @@ namespace AppLogic
 
     bool ImageDeconvolution::saveAllFilteredImages(string folder_path)
     {
-        // this->applyFilterToWorkingImages();
-        // size_t index = 0;
-        for (size_t index =0; index < this->working_images.size();++index)
+        for (size_t index = 0; index < this->working_images.size(); ++index)
         {
-            if(this->is_canceled) {
+            if (this->is_canceled)
+            {
                 this->is_canceled = false;
                 return false;
             }
-            
+
             string filename = folder_path + "/" + this->loaded_file_names[index] + FILT_IMAGE_SUFFIX;
             if (!this->applyFilterToImage(index).save(filename))
                 return false;
-            // ++index;
         }
-
         return true;
     }
 
-    void ImageDeconvolution::cancelFilterAllImages(){
-        this->is_canceled= true;
+    void ImageDeconvolution::cancelFilterAllImages()
+    {
+        this->is_canceled = true;
     }
 
-    bool ImageDeconvolution::deleteFilter(size_t index){
-        if(index > this->loaded_filters.size()) return false;
+    bool ImageDeconvolution::deleteFilter(size_t index)
+    {
+        if (index > this->loaded_filters.size())
+            return false;
         FilterInfo *fi = &this->loaded_filters[index];
-        if(!ImageLoader::deleteFilter(fi->filter_name)) return false;
+        if (!ImageLoader::deleteFilter(fi->filter_name))
+            return false;
 
-        // delete loaded filter 
+        // delete loaded filter
         this->loaded_filters.erase(this->loaded_filters.begin() + index);
 
-        std::cout<<"delete filter"<<std::endl;
-
         return true;
     }
-    
+
     // bool ImageDeconvolution::exportFilter(size_t index, const string path_to_file){
 
     // }
@@ -160,19 +156,11 @@ namespace AppLogic
 
     // }
 
-    VecImage * ImageDeconvolution::getLoadedImage(const size_t index){
-        if(index > this->working_images.size()) return NULL;
+    VecImage *ImageDeconvolution::getLoadedImage(const size_t index)
+    {
+        if (index > this->working_images.size())
+            return NULL;
         return &(this->working_images[index]);
     }
 
 }
-
-// +applyFilterToImage(image_id : int, filter_id : int)
-// +applyFilterToWorkingImages(filter_id : int)
-// +loadImagesFromFolder(folder_path : string) : string[]
-// +loadImagesFromZip(file_path : string) : string[]
-// +saveFilteredImage(image_id : int)
-// +saveAllFilteredImages()
-// +getFilteredImage(image_id : int) : char[]
-
-// working_images : VecImage[]
