@@ -30,9 +30,7 @@ namespace AppLogic
         vec og_vec = w_img->getVecDoubleData();
         if (this->F_matrix.n_cols != og_vec.size())
             return result;
-
-        result = VecImage(F_matrix * og_vec, w_img->numCols(), w_img->numRows());
-        return result;
+        return  VecImage(F_matrix * og_vec, w_img->numCols(), w_img->numRows());;
     }
 
     bool ImageDeconvolution::applyFilterToWorkingImages()

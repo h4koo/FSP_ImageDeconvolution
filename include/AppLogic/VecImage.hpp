@@ -44,6 +44,7 @@ namespace AppLogic
         VecImage(const vec &img_data, size_t width, size_t height);
         VecImage(CImg<unsigned char> &cImg);
         VecImage(const VecImage &vImg);
+        VecImage& operator= (const VecImage &image);
 
         size_t numRows();
         size_t numCols(); 

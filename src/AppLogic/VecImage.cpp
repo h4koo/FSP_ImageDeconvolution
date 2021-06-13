@@ -85,6 +85,18 @@ namespace AppLogic
         this->rows = height;
     }
 
+    VecImage& VecImage::operator= (const VecImage &image){
+        // self-assignment guard
+        if (this == &image)
+            return *this;
+        this->cols = image.cols;
+        this->rows = image.rows;
+        this->source_file_location = image.source_file_location;
+        this->data = data;
+        return *this;
+    }
+
+
     const unsigned char *VecImage::getRawImageData()
     {
         return this->data._data;
