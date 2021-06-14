@@ -90,7 +90,7 @@ namespace AppLogic
 
     bool FilterLogic::saveAllDirtyImages(string folder_path)
     {
-        this->new_filter.applyNoiseToWorkingImages(this->last_noise_value, this->last_noise);
+        // this->new_filter.applyNoiseToWorkingImages(this->last_noise_value, this->last_noise);
         return this->new_filter.saveAllDirtyImages(folder_path);
     }
 

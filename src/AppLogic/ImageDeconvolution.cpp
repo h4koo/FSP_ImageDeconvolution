@@ -33,23 +33,23 @@ namespace AppLogic
         return  VecImage(F_matrix * og_vec, w_img->numCols(), w_img->numRows());;
     }
 
-    bool ImageDeconvolution::applyFilterToWorkingImages()
-    {
+    // bool ImageDeconvolution::applyFilterToWorkingImages()
+    // {
 
-        if (this->F_matrix.size() == 0 || this->working_images.size() == 0)
-        {
-            return false;
-        }
+    //     if (this->F_matrix.size() == 0 || this->working_images.size() == 0)
+    //     {
+    //         return false;
+    //     }
 
-        this->filtered_images.clear();
-        for (auto &&og_img : working_images)
-        {
-            vec og_vec = og_img.getVecDoubleData();
-            vec filtered_vec = F_matrix * og_vec;
-            filtered_images.push_back(VecImage(filtered_vec, og_img.numCols(), og_img.numRows()));
-        }
-        return true;
-    }
+    //     this->filtered_images.clear();
+    //     for (auto &&og_img : working_images)
+    //     {
+    //         vec og_vec = og_img.getVecDoubleData();
+    //         vec filtered_vec = F_matrix * og_vec;
+    //         filtered_images.push_back(VecImage(filtered_vec, og_img.numCols(), og_img.numRows()));
+    //     }
+    //     return true;
+    // }
 
     vector<string> ImageDeconvolution::loadImagesFromZip(string file_path)
     {

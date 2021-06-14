@@ -65,7 +65,6 @@ namespace AppLogic
 
     bool ImageCleaningLogic::saveAllFilteredImages(string folder_path)
     {
-        // this->deconv.applyFilterToWorkingImages();
         return this->deconv.saveAllFilteredImages(folder_path);
     }
 

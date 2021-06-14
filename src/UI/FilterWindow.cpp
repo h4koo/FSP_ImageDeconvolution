@@ -4,6 +4,8 @@
 #define WINDOWS_DEVICES "CON|AUX|PRN|COM1|COM2|LPT1|LPT2|NUL"
 #define SLASHES "/\\"
 
+
+namespace UI {
 using AppLogic::noise_type_t;
 using std::cout;
 using std::endl;
@@ -453,4 +455,6 @@ void FilterWindow::on_actionLoadImageFromZip_triggered()
     {
         this->loadImagesFromZip(dialog.selectedFiles().first());
     }
+}
+
 }

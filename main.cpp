@@ -6,7 +6,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    ImageDeconvolutionWindow img_dcv;
+    UI::ImageDeconvolutionWindow img_dcv;
     img_dcv.show();
     return a.exec();
 }

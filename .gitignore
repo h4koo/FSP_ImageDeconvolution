@@ -4,6 +4,7 @@
 #folders
 .vscode
 build
+docs/
 build/*
 libs/armadillo
 libs/lib_win64

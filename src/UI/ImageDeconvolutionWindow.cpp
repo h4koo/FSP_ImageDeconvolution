@@ -2,7 +2,7 @@
 #include "ui_imagedeconvolutionwindow.h"
 
 #define ELIDE_WIDTH 400
-
+namespace UI {
 using std::cout;
 using std::endl;
 using std::string;
@@ -458,4 +458,7 @@ void ImageDeconvolutionWindow::on_importFilterFinished()
 void ImageDeconvolutionWindow::on_importFilterCanceled()
 {
     AppLogic::ImageLoader::cancelOperation(true);
+}
+
+
 }

@@ -66,7 +66,7 @@ namespace AppLogic
 
         size_t vec_it = 0;
 
-        // Algorithm for calculating value between a scale of [0-255]
+        // Algorithm for calculating a value between a scale of [0-255]
         // ranged_value = 255 / (max-min) * (X - min)
         // where max and min are the maximun and minimun values present in the vector
         // and X is the value of each item in the vector
@@ -100,7 +100,7 @@ namespace AppLogic
     const unsigned char *VecImage::getRawImageData()
     {
         return this->data._data;
-    };
+    }
 
     std::vector<double> VecImage::getDoubleData()
     {
@@ -191,13 +191,10 @@ namespace AppLogic
         }
     }
 
-    void VecImage::display()
-    {
-        this->data.display(source_file_location.c_str());
-    }
-
     size_t VecImage::numRows() { return this->rows; }
+
     size_t VecImage::numCols() { return this->cols; }
+
     string VecImage::getSourceFileLocation() { return this->source_file_location; }
 
 }
