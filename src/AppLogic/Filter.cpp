@@ -48,7 +48,7 @@ namespace AppLogic
         {
         case calc_method_t::RCIMA_METHOD:
             t1 = high_resolution_clock::now();
-            this->F_matrix = frcima::rcima(this->image_set, this->getWorkingImagesMat(), rank);
+            this->F_matrix = frcima::rcima(this->image_set, this->getDirtyWorkingImagesMat(), rank);
             t2 = high_resolution_clock::now();
             break;
         case calc_method_t::FAST_RCIMA_METHOD:
@@ -90,18 +90,6 @@ namespace AppLogic
         return result;
     }
 
-    void Filter::applyNoiseToWorkingImages(size_t noise_value, noise_type_t noise_type)
-    {
-        this->last_used_noise_type = noise_type;
-        this->last_used_noise_value = noise_value;
-
-        for (auto &image : this->working_images)
-            image.applyNoise(noise_value, noise_type);
-
-        this->calc_info.noise_type = VecImage::getNoiseName(noise_type);
-        this->calc_info.noise_value = noise_value;
-    }
-
     bool Filter::saveToFile(string folder_path)
     {
         if (this->F_matrix.n_rows > 0)
@@ -131,6 +119,30 @@ namespace AppLogic
             for (size_t col = 0; col < columns; ++col)
             {
                 vec current_image = this->working_images[col].getDoubleData();
+                for (size_t r = 0; r < rows; ++r)
+                {
+                    w_image_set(r, col) = current_image(r);
+                }
+            }
+        }
+        return w_image_set;
+    }
+
+    mat Filter::getDirtyWorkingImagesMat()
+    {
+        mat w_image_set;
+
+        if (this->working_images.size())
+        {
+            size_t columns = working_images.size();                                    //training set amount of images
+            size_t rows = working_images[0].numCols() * working_images[0].numRows(); // training set size of vectorized image
+
+            w_image_set = mat(rows, columns);
+            for (size_t col = 0; col < columns; ++col)
+            {   
+                VecImage v_img(this->working_images[col]);
+                v_img.applyNoise(this->last_used_noise_value, this->last_used_noise_type);
+                vec current_image = v_img.getVecDoubleData();
                 for (size_t r = 0; r < rows; ++r)
                 {
                     w_image_set(r, col) = current_image(r);

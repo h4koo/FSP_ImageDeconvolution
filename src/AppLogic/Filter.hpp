@@ -66,6 +66,13 @@ namespace AppLogic
          */
         mat getWorkingImagesMat();
 
+        /**
+         * @brief generates training matrix out of the loaded images applying last used noise on them
+         * 
+         * @return mat training matrix where each column is a vectorized form of each loaded image with noise applied
+         */
+        mat getDirtyWorkingImagesMat();
+
     public:
         /**
          * @brief Construct a new Filter object
@@ -82,9 +89,6 @@ namespace AppLogic
          * @return VecImage new VecImage with the applied noise
          */
         VecImage applyNoiseToImage(size_t image_id, size_t noise_value, noise_type_t noise_type = noise_type_t::GAUSSIAN);
-
-        // to delete
-        void applyNoiseToWorkingImages(size_t noise_value, noise_type_t noise_type = noise_type_t::GAUSSIAN);
 
         /**
          * @brief sets the name of the filter
