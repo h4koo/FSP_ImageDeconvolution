@@ -76,13 +76,13 @@ namespace AppLogic
         return this->loaded_filters;
     }
 
-    bool ImageDeconvolution::loadFilter(size_t id)
+    bool ImageDeconvolution::loadFilter(int index)
     {
-        if (id > this->loaded_filters.size())
+        if (index > static_cast<int>(this->loaded_filters.size()) || index < 0)
             return false;
 
         this->F_matrix.reset();
-        string mat_file_path = ImageLoader::FILTER_SAVE_LOCATION + this->loaded_filters[id].filter_name + FILTER_FILE_EXTENSION;
+        string mat_file_path = ImageLoader::FILTER_SAVE_LOCATION + this->loaded_filters[index].filter_name + FILTER_FILE_EXTENSION;
         return this->F_matrix.load(mat_file_path);
     }
 
@@ -115,9 +115,9 @@ namespace AppLogic
         this->is_canceled = true;
     }
 
-    bool ImageDeconvolution::deleteFilter(size_t index)
+    bool ImageDeconvolution::deleteFilter(int index)
     {
-        if (index > this->loaded_filters.size())
+        if (index > static_cast<int>(this->loaded_filters.size()) || index < 0)
             return false;
         FilterInfo *fi = &this->loaded_filters[index];
         if (!ImageLoader::deleteFilter(fi->filter_name))
@@ -128,6 +128,8 @@ namespace AppLogic
 
         return true;
     }
+
+
 
     // bool ImageDeconvolution::exportFilter(size_t index, const string path_to_file){
 
@@ -141,6 +143,22 @@ namespace AppLogic
         if (index > this->working_images.size())
             return NULL;
         return &(this->working_images[index]);
+    }
+
+    FilterInfo *ImageDeconvolution::getFilterInfo(int index){
+        if (index > static_cast<int>(this->loaded_filters.size()) || index < 0)
+            return NULL;
+        return &(this->loaded_filters[index]);
+        
+    }
+        
+    int ImageDeconvolution::getFilterIndex(const string filtername){
+        for (size_t i = 0; i < this->loaded_filters.size(); ++i)
+        {
+            if (this->loaded_filters[i].filter_name == filtername)
+            return i;
+        }
+        return -1;
     }
 
 }

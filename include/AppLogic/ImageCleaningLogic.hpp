@@ -98,7 +98,7 @@ namespace AppLogic
          * @return true if the matrix is loaded correctly
          * @return false if there is an error loading the matrix
          */
-        bool loadFilter(int filter_id);
+        bool loadFilter(const string filtername);
 
         /**
          * @brief returns a pointer to the loaded `VecImage` specified by `index`
@@ -114,16 +114,16 @@ namespace AppLogic
          * Aplies the current folder to the image identified by `image_id` 
          * 
          * @param image_id index of the image to apply the filter to
-         * @return VecImage new `VecImage` with the filter applied
+         * @return VecImage new VecImage with the filter applied
          */
         VecImage applyFilterToImage(int image_id);
 
          /**
-         * @brief returns pointer to the `FilterInfo` object fo current filter.
+         * @brief returns pointer to the FilterInfo object fo current filter.
          * 
          * @return FilterInfo* Object containing the calculation information for the curent filter
          */
-        FilterInfo *getFilterInfo(size_t indx);
+        FilterInfo *getFilterInfo(const string filtername);
 
         /**
          * @brief applies filter to all working images and saves them in the specified path
@@ -162,7 +162,7 @@ namespace AppLogic
          * @return true if the filter is deleted successfully
          * @return false if there is an error deleting the filters
          */
-        bool deleteFilter(size_t index);
+        bool deleteFilter(const string filtername);
 
         /**
          * @brief cancels the process of saving images with filter applied

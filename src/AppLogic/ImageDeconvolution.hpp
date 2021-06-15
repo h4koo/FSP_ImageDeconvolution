@@ -111,7 +111,7 @@ namespace AppLogic
          * @return true if the matrix is loaded correctly
          * @return false if there is an error loading the matrix
          */
-        bool loadFilter(size_t id);
+        bool loadFilter(int index);
 
         /**
          * @brief applies filter to image and saves it in the specified path
@@ -182,7 +182,7 @@ namespace AppLogic
          * @return true if the filter is deleted successfully
          * @return false if there is an error deleting the filters
          */
-        bool deleteFilter(size_t index);
+        bool deleteFilter(int index);
        
         /**
          * @brief cancels the process of saving images with filter applied
@@ -196,6 +196,15 @@ namespace AppLogic
          * @return vector<FilterInfo> list of FilterInfo objects for existing filters in filesystem
          */
         vector<FilterInfo> loadExistingFilters();
+
+        /**
+         * @brief returns pointer to the FilterInfo object fo current filter.
+         * 
+         * @return FilterInfo* Object containing the calculation information for the curent filter
+         */
+        FilterInfo *getFilterInfo(int index);
+
+        int getFilterIndex(const string filtername);
 
          // bool exportFilter(size_t index, const string path_to_file);
         // bool importFilter(const string path_to_file);

@@ -10,7 +10,7 @@ namespace UI
     using std::vector;
 
     ImageDeconvolutionWindow::ImageDeconvolutionWindow(QWidget *parent) : QMainWindow(parent),
-                                                                          ui(new Ui::ImageDeconvolutionWindow), label_loaded_image(new QLabel), label_filtered_image(new QLabel), is_filter_loaded(false)
+                                                                          ui(new Ui::ImageDeconvolutionWindow), label_loaded_image(new QLabel), label_filtered_image(new QLabel), is_filter_loaded(false), changed_filter_loading(false)
     {
         ui->setupUi(this);
         //create label to load image
@@ -33,6 +33,9 @@ namespace UI
 
         //load the filter list
         this->updateFilterList();
+        this->is_filter_loaded = true;
+        // ui->comboBox_filter_select->setCurrentIndex(0);
+        on_comboBox_filter_select_currentIndexChanged(0);
     }
 
     ImageDeconvolutionWindow::~ImageDeconvolutionWindow()
@@ -57,6 +60,11 @@ namespace UI
             statusBar()->showMessage("Unable to load filter", LONGER_MESSAGE_TIME);
             return;
         }
+        if(this->changed_filter_loading) 
+            {
+                on_comboBox_filter_select_currentIndexChanged(ui->comboBox_filter_select->currentIndex());
+                this->changed_filter_loading=false;
+            }
         statusBar()->showMessage("Finished loading filter", STANDARD_MESSAGE_TIME);
         this->is_filter_loaded = true;
         this->setFilteredImage(ui->listWidget_loaded_images->currentRow());
@@ -236,11 +244,15 @@ namespace UI
             this->displayFilterInfo(0);
             return;
         }
+        if (this->is_filter_loaded == false) {
+            this->changed_filter_loading = true;
+           return;
+        }
         this->is_filter_loaded = false;
-        AppLogic::FilterInfo *fi = this->img_cleaning.getFilterInfo(index);
+        AppLogic::FilterInfo *fi = this->img_cleaning.getFilterInfo(ui->comboBox_filter_select->currentText().toStdString());
         this->displayFilterInfo(fi);
 
-        QFuture<bool> load_filter_result = QtConcurrent::run(&this->img_cleaning, &AppLogic::ImageCleaningLogic::loadFilter, index);
+        QFuture<bool> load_filter_result = QtConcurrent::run(&this->img_cleaning, &AppLogic::ImageCleaningLogic::loadFilter, ui->comboBox_filter_select->currentText().toStdString());
         this->loadfilter_future_watcher.setFuture(load_filter_result);
         connect(&this->loadfilter_future_watcher, SIGNAL(finished()), this, SLOT(on_filterLoadingFinished()));
         statusBar()->showMessage(tr("Loading filter matrix ..."));
@@ -349,8 +361,10 @@ namespace UI
 
     void ImageDeconvolutionWindow::on_pushButton_deletefilter_clicked()
     {
+        if (!is_filter_loaded) return;
+
         size_t index = ui->comboBox_filter_select->currentIndex();
-        if (this->img_cleaning.deleteFilter(index))
+        if (this->img_cleaning.deleteFilter(ui->comboBox_filter_select->currentText().toStdString()))
             ui->comboBox_filter_select->removeItem(index);
     }
 

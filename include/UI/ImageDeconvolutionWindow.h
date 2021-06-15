@@ -98,6 +98,7 @@ private:
     QLabel *label_loaded_image; //!< label to show loaded image
     QLabel *label_filtered_image; //!< label to show filtered image
     bool is_filter_loaded; //!< label to show loaded image
+    bool changed_filter_loading; //!< indicates whether selected filter changed while loading previous filter
 
     /**
      * @brief sets the image names in the list to display to user

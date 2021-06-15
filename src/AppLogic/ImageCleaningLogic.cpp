@@ -31,9 +31,9 @@ namespace AppLogic
         return this->deconv.getLoadedImage(index);
     }
 
-    bool ImageCleaningLogic::loadFilter(int filter_id)
+    bool ImageCleaningLogic::loadFilter(const string filtername)
     {
-        return this->deconv.loadFilter(filter_id);
+        return this->deconv.loadFilter(this->deconv.getFilterIndex(filtername));
     }
 
     VecImage ImageCleaningLogic::applyFilterToImage(int image_id)
@@ -41,11 +41,9 @@ namespace AppLogic
         return this->deconv.applyFilterToImage(image_id);
     }
 
-    FilterInfo *ImageCleaningLogic::getFilterInfo(size_t indx)
+    FilterInfo *ImageCleaningLogic::getFilterInfo(const string filtername)
     {
-        if (indx > this->filters.size())
-            return NULL;
-        return &(this->filters[indx]);
+       return this->deconv.getFilterInfo(this->deconv.getFilterIndex(filtername));
     }
 
     string ImageCleaningLogic::getImagePath(const size_t index)
@@ -73,9 +71,9 @@ namespace AppLogic
         return this->deconv.saveFilteredImage(image_id, folder_path);
     }
 
-    bool ImageCleaningLogic::deleteFilter(size_t index)
+    bool ImageCleaningLogic::deleteFilter(const string filtername)
     {
-        return this->deconv.deleteFilter(index);
+        return this->deconv.deleteFilter(this->deconv.getFilterIndex(filtername));
     }
 
     // bool ImageCleaningLogic::exportFilter(size_t index, const string path_to_file){

@@ -53,7 +53,7 @@ namespace AppLogic
             break;
         case calc_method_t::FAST_RCIMA_METHOD:
             t1 = high_resolution_clock::now();
-            this->F_matrix = frcima::fast_rcima(this->image_set, this->getWorkingImagesMat(), rank);
+            this->F_matrix = frcima::fast_rcima(this->image_set, this->getDirtyWorkingImagesMat(), rank);
             t2 = high_resolution_clock::now();
             break;
         default:
@@ -66,6 +66,8 @@ namespace AppLogic
         this->calc_info.image_calc_amount = this->working_images.size();
         this->calc_info.rank = rank;
         this->calc_info.calculation_method = Filter::getCalculationMethodName(calc_method);
+        this->calc_info.noise_type = VecImage::getNoiseName(this->last_used_noise_type);
+        this->calc_info.noise_value = this->last_used_noise_value;
 
         return true;
         }
@@ -89,6 +91,18 @@ namespace AppLogic
         result.applyNoise(noise_value, noise_type);
         return result;
     }
+
+    // void Filter::applyNoiseToWorkingImages(size_t noise_value, noise_type_t noise_type)
+    // {
+    //     this->last_used_noise_type = noise_type;
+    //     this->last_used_noise_value = noise_value;
+
+    //     for (auto &image : this->working_images)
+    //         image.applyNoise(noise_value, noise_type);
+
+    //     this->calc_info.noise_type = VecImage::getNoiseName(noise_type);
+    //     this->calc_info.noise_value = noise_value;
+    // }
 
     bool Filter::saveToFile(string folder_path)
     {

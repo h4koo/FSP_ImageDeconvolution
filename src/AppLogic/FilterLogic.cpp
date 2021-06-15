@@ -33,9 +33,7 @@ namespace AppLogic
     }
 
     bool FilterLogic::createFilter(string name, int rank, calc_method_t calc_method)
-    {        
-        // this->new_filter.applyNoiseToWorkingImages(this->last_noise_value, this->last_noise);
-    
+    {       
         std::thread thrd = std::thread(&Filter::calculateFilter, &this->new_filter, rank, calc_method);
         this->filter_calc_thread = thrd.native_handle();
         thrd.join();
