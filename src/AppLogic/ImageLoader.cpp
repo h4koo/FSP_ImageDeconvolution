@@ -182,25 +182,27 @@ namespace AppLogic
 
         char file_buff[ZIP_FILE_BUFF_SIZE];
         int read_bytes;
-        try{
-        while ((read_bytes = zip_fread(zip_file, file_buff, ZIP_FILE_BUFF_SIZE)) > 0)
+        try
         {
-            if (_is_canceled)
+            while ((read_bytes = zip_fread(zip_file, file_buff, ZIP_FILE_BUFF_SIZE)) > 0)
             {
-                _is_canceled = false;
-                stream.close();
-                zip_fclose(zip_file);
-                remove(filename.c_str());
-                return false;
+                if (_is_canceled)
+                {
+                    _is_canceled = false;
+                    stream.close();
+                    zip_fclose(zip_file);
+                    remove(filename.c_str());
+                    return false;
+                }
+                stream.write(file_buff, read_bytes);
             }
-            stream.write(file_buff, read_bytes);
-        }
-        stream.close();
-        zip_fclose(zip_file);
-        return true;
+            stream.close();
+            zip_fclose(zip_file);
+            return true;
         }
 
-        catch (...){
+        catch (...)
+        {
             stream.close();
             zip_fclose(zip_file);
             remove(filename.c_str());

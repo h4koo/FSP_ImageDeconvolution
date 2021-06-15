@@ -33,13 +33,7 @@ namespace AppLogic
     }
 
     bool FilterLogic::createFilter(string name, int rank, calc_method_t calc_method)
-    {
-
-        if (ImageLoader::existsNameFilter(name))
-        {
-            std::cout << "the filename already exists" << std::endl;
-            return false;
-        }
+    {        
         this->new_filter.applyNoiseToWorkingImages(this->last_noise_value, this->last_noise);
     
         std::thread thrd = std::thread(&Filter::calculateFilter, &this->new_filter, rank, calc_method);
@@ -90,7 +84,6 @@ namespace AppLogic
 
     bool FilterLogic::saveAllDirtyImages(string folder_path)
     {
-        // this->new_filter.applyNoiseToWorkingImages(this->last_noise_value, this->last_noise);
         return this->new_filter.saveAllDirtyImages(folder_path);
     }
 

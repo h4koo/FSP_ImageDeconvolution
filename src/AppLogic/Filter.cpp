@@ -1,6 +1,5 @@
 #include "Filter.hpp"
 
-#define DIRTY_IMAGE_SUFFIX "_dirty.png"
 
 namespace AppLogic
 {

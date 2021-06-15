@@ -9,6 +9,8 @@
 #ifndef FILTER_H
 #define FILTER_H
 
+#define DIRTY_IMAGE_SUFFIX "_dirty.png" //!< suffix used in saved noisy image filenames
+
 #include <vector>
 #include <string>
 #include <armadillo>
@@ -60,7 +62,7 @@ namespace AppLogic
         /**
          * @brief generates training matrix out of the loaded images
          * 
-         * @return mat training matrix where each column is a vetorized form of each loaded image
+         * @return mat training matrix where each column is a vectorized form of each loaded image
          */
         mat getWorkingImagesMat();
 

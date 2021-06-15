@@ -1,7 +1,7 @@
 /**
  * @file ImageLoader.hpp
  * @author Jorge Agüero Zamora
- * @brief Contains `ImageLoader` class in charge of loading images and filter information
+ * @brief Contains ImageLoader class in charge of loading images and filter information
  * @version 0.1
  * @date 2021-06-13
  * 
@@ -74,7 +74,7 @@ namespace AppLogic
         /**
          * @brief removes file extension from filename
          * 
-         * This function removes everything after the las dot (.) encountered 
+         * This function removes everything after the last dot (.) encountered 
          * in the filename
          * 
          * @param filename name of the file with extension
@@ -104,7 +104,7 @@ namespace AppLogic
         void addImageFileInfo(const string &full_path);
 
         /**
-         * @brief Create a File From Zip File object
+         * @brief Create a file from Zip file object
          * 
          * @param filename 
          * @param stream 

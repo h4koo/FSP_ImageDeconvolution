@@ -62,7 +62,13 @@ After that run `make` to build the application
 Running the build instructions will create the `~/.fsp_imgdcnv` folder in the users home folder to store the calculated filters. It will also create the `build` directory where the executable and object files are stored during compilation.
 
 ## (optional) Build documentation
-To generate the documentation of the project a `Doxyfile` is provived to be used with doxygen to create html and latex files containing the documentation. To build the documentation make sure 
+To generate the documentation of the project a `Doxyfile` is provided to be used with `doxygen` to create HTML and LaTex files containing the documentation. To build the documentation make sure you have `doxygen` installed, or you can follow the steps outlined above to install it in Ubuntu.
+
+To create the documentation you can run
+
+`$ doxygen Doxyfile`
+
+this generates the documentation in a _docs_ folder. The HTML documentation can be accessed by opnening the `index.html`file.
 
 ### Run the application
 

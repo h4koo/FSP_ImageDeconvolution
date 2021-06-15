@@ -13,10 +13,10 @@ namespace frcima
      * @brief calculates the error from the calculated filter
      * 
      * @param A Calculated filter we want to get the error from
-     * @param C Training data
-     * @param X Training data
+     * @param C Training matrix with vectorized noisy images
+     * @param X Training matrix with vectorized source images
      */
-    void calculate_error(mat &A, const mat& C, const mat &X);
+    void calculate_error(mat &A, const mat &C, const mat &X);
 
     /**
      * @brief calculates low rank matrix approximation using the modified bilateral random projections (MBRP)
@@ -134,7 +134,8 @@ namespace frcima
     }
 
     // ----------------------------------------------------------------------------------------------------------------------------------------
-    void calculate_error(mat &A, const mat& C, const mat &X){
+    void calculate_error(mat &A, const mat &C, const mat &X)
+    {
         _calculated_error = arma::norm(A * C - X, "fro");
         _calculated_error = (_calculated_error * _calculated_error) / X.n_cols;
     }

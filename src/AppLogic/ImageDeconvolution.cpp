@@ -1,5 +1,4 @@
 #include "ImageDeconvolution.hpp"
-#define FILT_IMAGE_SUFFIX "_filtered.png"
 
 namespace AppLogic
 {
@@ -30,26 +29,9 @@ namespace AppLogic
         vec og_vec = w_img->getVecDoubleData();
         if (this->F_matrix.n_cols != og_vec.size())
             return result;
-        return  VecImage(F_matrix * og_vec, w_img->numCols(), w_img->numRows());;
+        return VecImage(F_matrix * og_vec, w_img->numCols(), w_img->numRows());
+        ;
     }
-
-    // bool ImageDeconvolution::applyFilterToWorkingImages()
-    // {
-
-    //     if (this->F_matrix.size() == 0 || this->working_images.size() == 0)
-    //     {
-    //         return false;
-    //     }
-
-    //     this->filtered_images.clear();
-    //     for (auto &&og_img : working_images)
-    //     {
-    //         vec og_vec = og_img.getVecDoubleData();
-    //         vec filtered_vec = F_matrix * og_vec;
-    //         filtered_images.push_back(VecImage(filtered_vec, og_img.numCols(), og_img.numRows()));
-    //     }
-    //     return true;
-    // }
 
     vector<string> ImageDeconvolution::loadImagesFromZip(string file_path)
     {

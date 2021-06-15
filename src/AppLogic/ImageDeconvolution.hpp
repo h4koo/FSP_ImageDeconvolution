@@ -9,6 +9,8 @@
 #ifndef IMAGEDECONVOLUTION_H
 #define IMAGEDECONVOLUTION_H
 
+#define FILT_IMAGE_SUFFIX "_filtered.png" //!< suffix used in saved filtered image filenames
+
 #include <vector>
 #include <string>
 #include <armadillo>
