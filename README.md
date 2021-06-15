@@ -32,6 +32,9 @@ Install the following packes:
 #### libzip
 `$ sudo apt-get install libzip-dev`
 
+### (optional) doxygen
+`sudo apt-get install doxygen`
+
 ### Build application
 
 In order to build the application you need to download the source code first.
@@ -52,11 +55,14 @@ Run `qmake` to generate the makefile
 
 `$ qmake`
 
-After that run `make`   to build the application
+After that run `make` to build the application
 
 `$ make`
 
 Running the build instructions will create the `~/.fsp_imgdcnv` folder in the users home folder to store the calculated filters. It will also create the `build` directory where the executable and object files are stored during compilation.
+
+## (optional) Build documentation
+To generate the documentation of the project a `Doxyfile` is provived to be used with doxygen to create html and latex files containing the documentation. To build the documentation make sure 
 
 ### Run the application
 
